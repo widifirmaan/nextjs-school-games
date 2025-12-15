@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="id" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Level 1</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-body: #b3e5fc;
+            --panel-bg: #3e2723;
+            --panel-border: #1a237e;
+            --text-shadow: 2px 2px 0px #000;
+        }
+        body {
+            background-color: var(--bg-body);
+            font-family: 'Nunito', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .game-panel {
+            background-color: var(--panel-bg);
+            border: 8px solid var(--panel-border);
+            border-radius: 30px;
+            padding: 40px;
+            color: white;
+            box-shadow: 0 10px 0 rgba(0,0,0,0.2);
+            position: relative;
+        }
+        .form-label {
+            font-family: 'Fredoka One', cursive;
+            color: #ffca28;
+            text-shadow: 1px 1px 0 #000;
+        }
+        .form-control {
+            border-radius: 10px;
+            border: 3px solid #7986cb;
+            background-color: rgba(255,255,255,0.9);
+        }
+        .btn-submit {
+            background: linear-gradient(180deg, #ffa726 0%, #f57c00 100%);
+            border: 2px solid #fff;
+            border-radius: 15px;
+            color: white;
+            font-family: 'Fredoka One', cursive;
+            padding: 10px 30px;
+            text-transform: uppercase;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+        .btn-close-custom {
+            position: absolute;
+            top: -20px;
+            right: -20px;
+            background: #fdd835;
+            border: 4px solid #fff;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: #e65100;
+            cursor: pointer;
+            box-shadow: 0 4px 0 rgba(0,0,0,0.2);
+            z-index: 11;
+            text-decoration: none;
+        }
+        /* Modal Styling */
+        .modal-content-game {
+            background-color: var(--panel-bg);
+            border: 4px solid var(--panel-border);
+            border-radius: 20px;
+            color: white;
+            text-align: center;
+        }
+        .modal-header-game {
+            border-bottom: none;
+            justify-content: center;
+            padding-top: 20px;
+        }
+        .modal-title-game {
+            font-family: 'Fredoka One', cursive;
+            color: #ffca28;
+            text-shadow: 1px 1px 0 #000;
+            font-size: 1.5rem;
+        }
+        .modal-footer-game {
+            border-top: none;
+            justify-content: center;
+            padding-bottom: 20px;
+        }
+        .btn-game-yes {
+            background: linear-gradient(180deg, #4caf50 0%, #388e3c 100%);
+            border: 2px solid #fff;
+            border-radius: 10px;
+            color: white;
+            font-family: 'Fredoka One', cursive;
+            padding: 8px 20px;
+            margin: 0 10px;
+        }
+        .btn-game-no {
+            background: linear-gradient(180deg, #f44336 0%, #d32f2f 100%);
+            border: 2px solid #fff;
+            border-radius: 10px;
+            color: white;
+            font-family: 'Fredoka One', cursive;
+            padding: 8px 20px;
+            margin: 0 10px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="game-panel">
+                <!-- Close Button -->
+                <a href="#" class="btn-close-custom" id="btnClose">
+                    <i class="fas fa-times"></i>
+                </a>
+
+                <h2 class="text-center mb-4" style="font-family: 'Fredoka One', cursive; text-shadow: var(--text-shadow);">
+                    LEVEL 1: PERTANYAAN DASAR
+                </h2>
+                <form id="levelForm" th:action="@{/siswa/level/1/submit}" method="post">
+                    <div class="mb-3">
+                        <label for="q1" class="form-label">Siapakah presiden pertama Indonesia?</label>
+                        <input type="text" class="form-control" id="q1" name="Siapakah_presiden_pertama_Indonesia?"
+                               th:value="${levelData != null ? levelData['Siapakah_presiden_pertama_Indonesia?'] : ''}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="q2" class="form-label">Apa warna bendera Indonesia?</label>
+                        <input type="text" class="form-control" id="q2" name="Apa_warna_bendera_Indonesia?"
+                               th:value="${levelData != null ? levelData['Apa_warna_bendera_Indonesia?'] : ''}" required>
+                    </div>
+                    <div class="text-center mt-4">
+                        <button type="button" class="btn-submit" id="btnSubmit">Kirim Jawaban</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Custom Confirmation Modal -->
+<div class="modal fade" id="confirmModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content modal-content-game">
+            <div class="modal-header modal-header-game">
+                <h5 class="modal-title modal-title-game" id="confirmTitle">Konfirmasi</h5>
+            </div>
+            <div class="modal-body">
+                <p id="confirmMessage" style="font-size: 1.1rem;">Apakah Anda yakin?</p>
+            </div>
+            <div class="modal-footer modal-footer-game">
+                <button type="button" class="btn btn-game-no" data-bs-dismiss="modal">TIDAK</button>
+                <button type="button" class="btn btn-game-yes" id="btnConfirmYes">YA</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var confirmModal = new bootstrap.Modal(document.getElementById('confirmModal'));
+        var btnConfirmYes = document.getElementById('btnConfirmYes');
+        var confirmTitle = document.getElementById('confirmTitle');
+        var confirmMessage = document.getElementById('confirmMessage');
+        var actionType = ''; // 'close' or 'submit'
+
+        // Handle Close Button
+        document.getElementById('btnClose').addEventListener('click', function(e) {
+            e.preventDefault();
+            actionType = 'close';
+            confirmTitle.textContent = 'Keluar Level';
+            confirmMessage.textContent = 'Apakah Anda yakin ingin keluar? Perubahan yang belum disimpan akan hilang.';
+            confirmModal.show();
+        });
+
+        // Handle Submit Button
+        document.getElementById('btnSubmit').addEventListener('click', function(e) {
+            e.preventDefault();
+            // Check form validity first
+            if (document.getElementById('levelForm').checkValidity()) {
+                actionType = 'submit';
+                confirmTitle.textContent = 'Kirim Jawaban';
+                confirmMessage.textContent = 'Apakah Anda yakin ingin mengirim jawaban ini?';
+                confirmModal.show();
+            } else {
+                document.getElementById('levelForm').reportValidity();
+            }
+        });
+
+        // Handle "YA" Click
+        btnConfirmYes.addEventListener('click', function() {
+            if (actionType === 'close') {
+                window.location.href = '/siswa/dashboard';
+            } else if (actionType === 'submit') {
+                document.getElementById('levelForm').submit();
+            }
+            confirmModal.hide();
+        });
+    });
+</script>
+</body>
+</html>

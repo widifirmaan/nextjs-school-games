@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="id" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Guru - Manajemen Siswa</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-body: #b3e5fc;
+            --panel-bg: #3e2723;
+            --panel-border: #1a237e;
+            --card-bg: #3949ab;
+        }
+        body {
+            background-color: var(--bg-body);
+            font-family: 'Nunito', sans-serif;
+        }
+        .game-panel {
+            background-color: var(--panel-bg);
+            border: 8px solid var(--panel-border);
+            border-radius: 30px;
+            padding: 20px;
+            color: white;
+        }
+        .header-ribbon {
+            background: linear-gradient(180deg, #fdd835 0%, #f9a825 100%);
+            width: fit-content;
+            margin: -50px auto 20px auto;
+            padding: 10px 40px;
+            border-radius: 15px;
+            border-bottom: 5px solid #e65100;
+            color: white;
+            font-family: 'Fredoka One', cursive;
+            font-size: 1.5rem;
+            text-transform: uppercase;
+            text-shadow: 2px 2px 0px #000;
+            position: relative;
+            z-index: 10;
+        }
+        .filter-bar {
+            background-color: rgba(0,0,0,0.2);
+            padding: 15px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+        }
+        .table-container {
+            width: 100%;
+            overflow-x: auto;
+            border-radius: 15px;
+        }
+        .table-custom {
+            width: 100%;
+            min-width: 1200px;
+            border-spacing: 0;
+        }
+        .table-custom th, .table-custom td {
+            text-align: center;
+            padding: 12px 8px;
+            vertical-align: middle;
+        }
+        .table-custom thead th {
+            background-color: var(--card-bg);
+            color: #ffca28;
+            font-family: 'Fredoka One', cursive;
+            position: sticky;
+            top: 0;
+            z-index: 2;
+        }
+        .table-custom tbody td {
+            color: #212529;
+            background-color: #e8eaf6;
+        }
+        .table-custom tbody tr:nth-child(odd) td {
+            background-color: #c5cae9;
+        }
+        .table-custom th:first-child, .table-custom td:first-child {
+            position: sticky;
+            left: 0;
+            z-index: 3;
+            min-width: 180px;
+            background-color: #e8eaf6;
+            font-weight: bold;
+            border-right: 2px solid #9fa8da;
+        }
+        .table-custom thead th:first-child {
+            z-index: 4;
+            background-color: var(--card-bg);
+        }
+        .table-custom tbody tr:nth-child(odd) td:first-child {
+            background-color: #c5cae9;
+        }
+        .table-custom th:last-child, .table-custom td:last-child {
+            position: sticky;
+            right: 0;
+            z-index: 3;
+            min-width: 120px;
+            background-color: #e8eaf6;
+            border-left: 2px solid #9fa8da;
+        }
+        .table-custom thead th:last-child {
+            z-index: 4;
+            background-color: var(--card-bg);
+        }
+        .table-custom tbody tr:nth-child(odd) td:last-child {
+            background-color: #c5cae9;
+        }
+        .level-cell { cursor: pointer; }
+        .level-complete i { color: #4caf50; font-size: 1.5rem; }
+        .level-incomplete i { color: #90a4ae; }
+        .modal-content { background-color: #3e2723; border: 4px solid #1a237e; color: white; }
+        .modal-header { border-bottom: 2px solid #1a237e; }
+        .btn-action { font-size: 0.8rem; padding: 5px 10px; border-radius: 8px; font-weight: bold; }
+        .btn-edit { background-color: #4caf50; color: white; }
+        .btn-delete { background-color: #f44336; color: white; }
+        .btn-logout-bottom {
+            background: #d32f2f;
+            border: 2px solid #fff;
+            border-radius: 15px;
+            color: white;
+            font-family: 'Fredoka One', cursive;
+            padding: 10px 30px;
+            text-transform: uppercase;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+            border-bottom: 4px solid #b71c1c;
+        }
+        .btn-logout-bottom:hover {
+            background: #c62828;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+<div class="container-fluid py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-11">
+            <div class="game-panel">
+                <div class="header-ribbon">Manajemen Siswa</div>
+
+                <!-- Filter Bar -->
+                <form th:action="@{/guru/dashboard}" method="get" class="filter-bar">
+                    <div class="row g-3 align-items-end">
+                        <div class="col-md-3">
+                            <label for="schoolName" class="form-label text-white">Sekolah</label>
+                            <select id="schoolName" name="schoolName" class="form-select">
+                                <option value="">Semua Sekolah</option>
+                                <option th:each="school : ${schools}" th:value="${school}" th:text="${school}" th:selected="${school == selectedSchool}"></option>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <label for="kelas" class="form-label text-white">Kelas</label>
+                            <select id="kelas" name="kelas" class="form-select">
+                                <option value="">Semua Kelas</option>
+                                <option th:each="c : ${classes}" th:value="${c}" th:text="${c}" th:selected="${c == selectedKelas}"></option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="searchName" class="form-label text-white">Cari Nama Siswa</label>
+                            <input type="text" id="searchName" name="searchName" class="form-control" placeholder="Masukkan nama..." th:value="${searchName}">
+                        </div>
+                        <div class="col-md-2">
+                            <button type="submit" class="btn btn-primary w-100">Filter</button>
+                        </div>
+                        <div class="col-md-2">
+                            <a th:href="@{/guru/export(schoolName=${selectedSchool}, kelas=${selectedKelas}, searchName=${searchName})}" class="btn btn-success w-100">
+                                <i class="fas fa-file-excel"></i> Export
+                            </a>
+                        </div>
+                    </div>
+                </form>
+
+                <div class="table-container mb-4">
+                    <table class="table-custom">
+                        <thead>
+                            <tr>
+                                <th>Nama Siswa</th>
+                                <th th:each="i : ${levelNumbers}" th:text="'Lvl ' + ${i}">Lvl X</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="siswa : ${listSiswa}">
+                                <td th:text="${siswa.fullName}">Nama Siswa</td>
+                                <td th:each="i : ${levelNumbers}" class="level-cell" th:attr="data-level-key='level' + ${i}, data-siswa-id=${siswa.id}" th:with="levelKey='level' + ${i}">
+                                    <div th:if="${siswa.levels.containsKey(levelKey)}" class="level-complete"><i class="fas fa-check-circle"></i></div>
+                                    <div th:unless="${siswa.levels.containsKey(levelKey)}" class="level-incomplete"><i class="far fa-circle"></i></div>
+                                </td>
+                                <td>
+                                    <a th:href="@{/guru/siswa/edit/{id}(id=${siswa.id})}" class="btn btn-action btn-edit me-1"><i class="fas fa-pencil-alt"></i></a>
+                                    <a th:href="@{/guru/siswa/hapus/{id}(id=${siswa.id})}" class="btn btn-action btn-delete" th:onclick="'return confirm(\'Apakah Anda yakin ingin menghapus siswa ini?\');'"><i class="fas fa-trash"></i></a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Bottom Logout Button -->
+                <div class="d-flex justify-content-center mt-4">
+                    <form th:action="@{/logout}" method="post">
+                        <button type="submit" class="btn btn-logout-bottom">
+                            <i class="fas fa-sign-out-alt"></i> LOGOUT
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="levelDetailModal" tabindex="-1" aria-labelledby="levelDetailModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="levelDetailModalLabel">Detail Level</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p><strong>Siswa:</strong> <span id="modalSiswaName"></span></p>
+        <p><strong>Level:</strong> <span id="modalLevelNumber"></span></p>
+        <hr>
+        <div id="modalLevelContent"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    var modal = new bootstrap.Modal(document.getElementById('levelDetailModal'));
+    var modalSiswaName = document.getElementById('modalSiswaName');
+    var modalLevelNumber = document.getElementById('modalLevelNumber');
+    var modalLevelContent = document.getElementById('modalLevelContent');
+
+    document.querySelectorAll('.level-cell').forEach(function (cell) {
+        cell.addEventListener('click', function () {
+            var siswaId = this.getAttribute('data-siswa-id');
+            var levelKey = this.getAttribute('data-level-key');
+            var siswaName = this.parentElement.querySelector('td:first-child').innerText;
+
+            if (this.querySelector('.level-complete')) {
+                modalSiswaName.textContent = siswaName;
+                modalLevelNumber.textContent = levelKey.replace('level', '');
+                modalLevelContent.innerHTML = '<p>Memuat data...</p>';
+                modal.show();
+
+                fetch('/guru/siswa/' + siswaId + '/level/' + levelKey)
+                    .then(response => response.json())
+                    .then(data => {
+                        var contentHtml = '<ul>';
+                        for (var key in data) {
+                            if (data.hasOwnProperty(key)) {
+                                if (key !== 'stars' && key !== 'status') {
+                                    contentHtml += '<li><strong>' + key.replace(/_/g, ' ') + ':</strong> ' + data[key] + '</li>';
+                                }
+                            }
+                        }
+                        contentHtml += '</ul>';
+                        modalLevelContent.innerHTML = contentHtml;
+                    })
+                    .catch(error => {
+                        console.error('Error fetching level details:', error);
+                        modalLevelContent.innerHTML = '<p class="text-danger">Gagal memuat data.</p>';
+                    });
+            }
+        });
+    });
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="id" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Siswa</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-body: #b3e5fc;
+            --panel-bg: #3e2723;
+            --panel-border: #1a237e;
+            --text-shadow: 2px 2px 0px #000;
+        }
+        body {
+            background-color: var(--bg-body);
+            font-family: 'Nunito', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .game-panel {
+            background-color: var(--panel-bg);
+            border: 8px solid var(--panel-border);
+            border-radius: 30px;
+            padding: 40px;
+            color: white;
+            box-shadow: 0 10px 0 rgba(0,0,0,0.2);
+        }
+        .form-label {
+            font-family: 'Fredoka One', cursive;
+            color: #ffca28;
+            text-shadow: 1px 1px 0 #000;
+        }
+        .form-control {
+            border-radius: 10px;
+            border: 3px solid #7986cb;
+            background-color: rgba(255,255,255,0.9);
+        }
+        .btn-submit, .btn-cancel {
+            border: 2px solid #fff;
+            border-radius: 15px;
+            color: white;
+            font-family: 'Fredoka One', cursive;
+            padding: 10px 30px;
+            text-transform: uppercase;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+            text-decoration: none;
+        }
+        .btn-submit {
+            background: linear-gradient(180deg, #ffa726 0%, #f57c00 100%);
+        }
+        .btn-cancel {
+            background: linear-gradient(180deg, #8d6e63 0%, #5d4037 100%);
+        }
+        .btn-cancel:hover {
+            color: white;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="game-panel">
+                <h2 class="text-center font-weight-bold mb-4" style="font-family: 'Fredoka One', cursive; text-shadow: var(--text-shadow);">
+                    <span th:if="${siswa.id == null}">Tambah Siswa Baru</span>
+                    <span th:unless="${siswa.id == null}">Edit Data Siswa</span>
+                </h2>
+                <form th:action="${siswa.id == null} ? @{/guru/siswa/tambah} : @{/guru/siswa/edit/{id}(id=${siswa.id})}" th:object="${siswa}" method="post">
+                    <div class="mb-3">
+                        <label for="fullName" class="form-label">Nama Lengkap</label>
+                        <input type="text" class="form-control" id="fullName" th:field="*{fullName}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="kelas" class="form-label">Kelas</label>
+                        <input type="text" class="form-control" id="kelas" th:field="*{kelas}" required>
+                    </div>
+                     <div class="mb-3">
+                        <label for="schoolName" class="form-label">Nama Sekolah</label>
+                        <input type="text" class="form-control" id="schoolName" th:field="*{schoolName}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="email" th:field="*{email}" required>
+                    </div>
+                    <div class="mb-3" th:if="${siswa.id == null}">
+                        <label for="username" class="form-label">Username</label>
+                        <input type="text" class="form-control" id="username" th:field="*{username}" required>
+                    </div>
+                    <div class="mb-3" th:if="${siswa.id == null}">
+                        <label for="password" class="form-label">Password</label>
+                        <input type="password" class="form-control" id="password" th:field="*{password}" required>
+                    </div>
+                    <div class="text-center">
+                        <button type="submit" class="btn-submit">Simpan</button>
+                        <a th:href="@{/guru/dashboard}" class="btn-cancel ms-2">Batal</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
