@@ -9,15 +9,16 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.Map;
+import java.util.UUID;
 
 @Controller
 @RequestMapping("/guru/siswa")
@@ -28,9 +29,11 @@ public class SiswaController {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
-    
+
     @Autowired
     private ObjectMapper objectMapper;
+
+    private static final String UPLOAD_DIR = "uploads/";
 
     @GetMapping("/tambah")
     public String showTambahForm(Model model) {
@@ -39,7 +42,11 @@ public class SiswaController {
     }
 
     @PostMapping("/tambah")
-    public String tambahSiswa(User siswa) {
+    public String tambahSiswa(User siswa, @RequestParam("profilePictureFile") MultipartFile profilePictureFile) {
+        if (!profilePictureFile.isEmpty()) {
+            String fileName = saveProfilePicture(profilePictureFile);
+            siswa.setPhotoUrl(fileName);
+        }
         siswa.setPassword(passwordEncoder.encode(siswa.getPassword()));
         siswa.setRole("SISWA");
         userRepository.save(siswa);
@@ -55,9 +62,15 @@ public class SiswaController {
     }
 
     @PostMapping("/edit/{id}")
-    public String editSiswa(@PathVariable("id") String id, User siswa) {
+    public String editSiswa(@PathVariable("id") String id, User siswa, @RequestParam("profilePictureFile") MultipartFile profilePictureFile) {
         User existingSiswa = userRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid student Id:" + id));
+
+        if (!profilePictureFile.isEmpty()) {
+            String fileName = saveProfilePicture(profilePictureFile);
+            existingSiswa.setPhotoUrl(fileName);
+        }
+
         existingSiswa.setFullName(siswa.getFullName());
         existingSiswa.setKelas(siswa.getKelas());
         existingSiswa.setEmail(siswa.getEmail());
@@ -90,6 +103,29 @@ public class SiswaController {
             return ResponseEntity.ok(levelData);
         } catch (IOException e) {
             return ResponseEntity.status(500).body(Collections.singletonMap("error", "Failed to parse level data"));
+        }
+    }
+
+    private String saveProfilePicture(MultipartFile file) {
+        try {
+            // Create the upload directory if it doesn't exist
+            Path uploadPath = Paths.get(UPLOAD_DIR);
+            if (!Files.exists(uploadPath)) {
+                Files.createDirectories(uploadPath);
+            }
+
+            String originalFileName = file.getOriginalFilename();
+            String fileExtension = "";
+            if (originalFileName != null && originalFileName.contains(".")) {
+                fileExtension = originalFileName.substring(originalFileName.lastIndexOf("."));
+            }
+            String uniqueFileName = UUID.randomUUID().toString() + fileExtension;
+
+            Path filePath = uploadPath.resolve(uniqueFileName);
+            Files.copy(file.getInputStream(), filePath);
+            return uniqueFileName;
+        } catch (IOException e) {
+            throw new RuntimeException("Could not store the file. Error: " + e.getMessage());
         }
     }
 }
