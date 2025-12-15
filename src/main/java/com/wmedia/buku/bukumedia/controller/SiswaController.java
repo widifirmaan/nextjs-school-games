@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -18,6 +19,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 
 @Controller
@@ -37,12 +39,26 @@ public class SiswaController {
 
     @GetMapping("/tambah")
     public String showTambahForm(Model model) {
-        model.addAttribute("siswa", new User());
+        if (!model.containsAttribute("siswa")) {
+            model.addAttribute("siswa", new User());
+        }
         return "form_siswa";
     }
 
     @PostMapping("/tambah")
-    public String tambahSiswa(User siswa, @RequestParam("profilePictureFile") MultipartFile profilePictureFile) {
+    public String tambahSiswa(User siswa, @RequestParam("profilePictureFile") MultipartFile profilePictureFile, RedirectAttributes redirectAttributes) {
+        // Validasi Username dan Email
+        if (userRepository.findByUsername(siswa.getUsername()) != null) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Username sudah digunakan.");
+            redirectAttributes.addFlashAttribute("siswa", siswa);
+            return "redirect:/guru/siswa/tambah";
+        }
+        if (userRepository.findByEmail(siswa.getEmail()).isPresent()) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Email sudah digunakan.");
+            redirectAttributes.addFlashAttribute("siswa", siswa);
+            return "redirect:/guru/siswa/tambah";
+        }
+
         if (!profilePictureFile.isEmpty()) {
             String fileName = saveProfilePicture(profilePictureFile);
             siswa.setPhotoUrl(fileName);
@@ -50,21 +66,34 @@ public class SiswaController {
         siswa.setPassword(passwordEncoder.encode(siswa.getPassword()));
         siswa.setRole("SISWA");
         userRepository.save(siswa);
+        redirectAttributes.addFlashAttribute("successMessage", "Siswa berhasil ditambahkan.");
         return "redirect:/guru/dashboard";
     }
 
     @GetMapping("/edit/{id}")
     public String showEditForm(@PathVariable("id") String id, Model model) {
-        User siswa = userRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Invalid student Id:" + id));
-        model.addAttribute("siswa", siswa);
+        if (!model.containsAttribute("siswa")) {
+            User siswa = userRepository.findById(id)
+                    .orElseThrow(() -> new IllegalArgumentException("Invalid student Id:" + id));
+            model.addAttribute("siswa", siswa);
+        }
         return "form_siswa";
     }
 
     @PostMapping("/edit/{id}")
-    public String editSiswa(@PathVariable("id") String id, User siswa, @RequestParam("profilePictureFile") MultipartFile profilePictureFile) {
+    public String editSiswa(@PathVariable("id") String id, User siswa, @RequestParam("profilePictureFile") MultipartFile profilePictureFile, RedirectAttributes redirectAttributes) {
         User existingSiswa = userRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid student Id:" + id));
+
+        // Validasi Email (jika diubah)
+        if (!existingSiswa.getEmail().equals(siswa.getEmail())) {
+            Optional<User> userWithSameEmail = userRepository.findByEmail(siswa.getEmail());
+            if (userWithSameEmail.isPresent()) {
+                redirectAttributes.addFlashAttribute("errorMessage", "Email sudah digunakan oleh pengguna lain.");
+                redirectAttributes.addFlashAttribute("siswa", siswa);
+                return "redirect:/guru/siswa/edit/" + id;
+            }
+        }
 
         if (!profilePictureFile.isEmpty()) {
             String fileName = saveProfilePicture(profilePictureFile);
@@ -76,14 +105,16 @@ public class SiswaController {
         existingSiswa.setEmail(siswa.getEmail());
         existingSiswa.setSchoolName(siswa.getSchoolName());
         userRepository.save(existingSiswa);
+        redirectAttributes.addFlashAttribute("successMessage", "Data siswa berhasil diperbarui.");
         return "redirect:/guru/dashboard";
     }
 
     @GetMapping("/hapus/{id}")
-    public String hapusSiswa(@PathVariable("id") String id) {
+    public String hapusSiswa(@PathVariable("id") String id, RedirectAttributes redirectAttributes) {
         User siswa = userRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid student Id:" + id));
         userRepository.delete(siswa);
+        redirectAttributes.addFlashAttribute("successMessage", "Siswa berhasil dihapus.");
         return "redirect:/guru/dashboard";
     }
 
@@ -108,7 +139,6 @@ public class SiswaController {
 
     private String saveProfilePicture(MultipartFile file) {
         try {
-            // Create the upload directory if it doesn't exist
             Path uploadPath = Paths.get(UPLOAD_DIR);
             if (!Files.exists(uploadPath)) {
                 Files.createDirectories(uploadPath);

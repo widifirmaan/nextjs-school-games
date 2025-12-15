@@ -1,6 +1,7 @@
 package com.wmedia.buku.bukumedia.model;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import java.util.HashMap;
 import java.util.Map;
@@ -10,13 +11,19 @@ public class User {
 
     @Id
     private String id;
+
+    @Indexed(unique = true)
     private String username;
+
     private String password;
     private String role;
     
     // Data Profil Tambahan
     private String fullName;
+
+    @Indexed(unique = true)
     private String email;
+    
     private String kelas;
     private String schoolName;
     private String photoUrl;

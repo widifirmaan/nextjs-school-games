@@ -10,9 +10,9 @@
     <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
-<div class="container-fluid py-5">
+<div class="container-main">
     <div class="row justify-content-center">
-        <div class="col-lg-11">
+        <div class="col-lg-12">
             <div class="game-panel">
                 <div class="header-ribbon">Manajemen Siswa</div>
 
@@ -47,6 +47,13 @@
                         </div>
                     </div>
                 </form>
+
+                <!-- Tombol Tambah Siswa -->
+                <div class="text-end my-3">
+                    <a th:href="@{/guru/siswa/tambah}" class="btn-submit" style="text-decoration: none;">
+                        <i class="fas fa-plus"></i> Tambah Siswa
+                    </a>
+                </div>
 
                 <div class="table-container mb-4">
                     <table class="table-custom">

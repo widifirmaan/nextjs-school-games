@@ -18,6 +18,13 @@
                     <span th:if="${siswa.id == null}">Tambah Siswa Baru</span>
                     <span th:unless="${siswa.id == null}">Edit Data Siswa</span>
                 </h2>
+
+                <!-- Error Message -->
+                <div th:if="${errorMessage}" class="alert alert-danger text-center" role="alert">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <span th:text="${errorMessage}"></span>
+                </div>
+
                 <form th:action="${siswa.id == null} ? @{/guru/siswa/tambah} : @{/guru/siswa/edit/{id}(id=${siswa.id})}" th:object="${siswa}" method="post" enctype="multipart/form-data">
                     <div class="mb-3 text-center" th:if="${siswa.photoUrl != null and siswa.photoUrl != ''}">
                         <img th:src="@{'/uploads/' + ${siswa.photoUrl}}" alt="Profile Picture" class="img-thumbnail" width="150"/>

@@ -13,11 +13,18 @@ body {
     background-color: var(--bg-body);
     font-family: 'Nunito', sans-serif;
     min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
     overflow-x: hidden; /* Prevent horizontal scroll on body */
 }
+
+/* --- Main Container for Wider Layouts --- */
+.container-main {
+    max-width: 1400px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
 
 /* --- Game Panel --- */
 .game-panel {

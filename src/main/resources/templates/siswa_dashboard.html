@@ -11,9 +11,9 @@
 </head>
 <body>
 
-<div class="container py-5">
+<div class="container-main py-5">
     <div class="row justify-content-center">
-        <div class="col-lg-10">
+        <div class="col-lg-12">
 
             <div class="game-panel">
 
@@ -22,32 +22,6 @@
                 </div>
 
                 <div class="row g-4">
-                    <div class="col-md-8">
-                        <div class="row g-3">
-                            <!-- Loop Level 1 sampai 30 -->
-                            <div class="col-4 col-sm-3" th:each="i : ${#numbers.sequence(1, 30)}"
-                                 th:with="prevLevelKey='level' + ${i-1}, currentLevelKey='level' + ${i}, isUnlocked=${i == 1 or user.levels.containsKey(prevLevelKey)}">
-
-                                <div class="level-card" th:classappend="${!isUnlocked} ? 'locked' : ''">
-                                    <div class="level-stars">
-                                        <span th:if="${!isUnlocked}"><i class="fas fa-lock"></i></span>
-                                        <span th:if="${isUnlocked}">
-                                            <i th:class="${user.levels.containsKey(currentLevelKey)} ? 'fas fa-star' : 'far fa-star'"></i>
-                                            <i th:class="${user.levels.containsKey(currentLevelKey)} ? 'fas fa-star' : 'far fa-star'"></i>
-                                            <i th:class="${user.levels.containsKey(currentLevelKey)} ? 'fas fa-star' : 'far fa-star'"></i>
-                                        </span>
-                                    </div>
-                                    <div class="level-title" th:text="'LVL ' + ${i}">LVL 1</div>
-
-                                    <a th:if="${isUnlocked}" th:href="@{'/siswa/level/' + ${i}}">
-                                        <div class="btn-level-action">PLAY</div>
-                                    </a>
-                                    <div th:unless="${isUnlocked}" class="btn-level-action">LOCK</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
                     <div class="col-md-4">
                         <div class="profile-section">
                             <div class="avatar-circle">
@@ -75,6 +49,33 @@
                             </div>
                         </div>
                     </div>
+                    <div class="col-md-8">
+                        <div class="row g-3">
+                            <!-- Loop Level 1 sampai 30 -->
+                            <div class="col-2 col-sm-4" th:each="i : ${#numbers.sequence(1, 30)}"
+                                 th:with="prevLevelKey='level' + ${i-1}, currentLevelKey='level' + ${i}, isUnlocked=${i == 1 or user.levels.containsKey(prevLevelKey)}">
+
+                                <div class="level-card" th:classappend="${!isUnlocked} ? 'locked' : ''">
+                                    <div class="level-stars">
+                                        <span th:if="${!isUnlocked}"><i class="fas fa-lock"></i></span>
+                                        <span th:if="${isUnlocked}">
+                                            <i th:class="${user.levels.containsKey(currentLevelKey)} ? 'fas fa-star' : 'far fa-star'"></i>
+                                            <i th:class="${user.levels.containsKey(currentLevelKey)} ? 'fas fa-star' : 'far fa-star'"></i>
+                                            <i th:class="${user.levels.containsKey(currentLevelKey)} ? 'fas fa-star' : 'far fa-star'"></i>
+                                        </span>
+                                    </div>
+                                    <div class="level-title" th:text="'LVL ' + ${i}">LVL 1</div>
+
+                                    <a th:if="${isUnlocked}" th:href="@{'/siswa/level/' + ${i}}">
+                                        <div class="btn-level-action">PLAY</div>
+                                    </a>
+                                    <div th:unless="${isUnlocked}" class="btn-level-action">LOCK</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
                 </div>
             </div>
         </div>
