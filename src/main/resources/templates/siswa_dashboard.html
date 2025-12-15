@@ -52,7 +52,7 @@
                     <div class="col-md-8">
                         <div class="row g-3">
                             <!-- Loop Level 1 sampai 30 -->
-                            <div class="col-2 col-sm-4" th:each="i : ${#numbers.sequence(1, 30)}"
+                            <div class="col-4 col-lg-2" th:each="i : ${#numbers.sequence(1, 30)}"
                                  th:with="prevLevelKey='level' + ${i-1}, currentLevelKey='level' + ${i}, isUnlocked=${i == 1 or user.levels.containsKey(prevLevelKey)}">
 
                                 <div class="level-card" th:classappend="${!isUnlocked} ? 'locked' : ''">

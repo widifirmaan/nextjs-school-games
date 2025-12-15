@@ -2,6 +2,7 @@ package com.wmedia.buku.bukumedia.controller;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.wmedia.buku.bukumedia.dto.SiswaDTO;
 import com.wmedia.buku.bukumedia.model.User;
 import com.wmedia.buku.bukumedia.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,32 +40,40 @@ public class SiswaController {
 
     @GetMapping("/tambah")
     public String showTambahForm(Model model) {
-        if (!model.containsAttribute("siswa")) {
-            model.addAttribute("siswa", new User());
+        if (!model.containsAttribute("siswaDTO")) {
+            model.addAttribute("siswaDTO", new SiswaDTO());
         }
         return "form_siswa";
     }
 
     @PostMapping("/tambah")
-    public String tambahSiswa(User siswa, @RequestParam("profilePictureFile") MultipartFile profilePictureFile, RedirectAttributes redirectAttributes) {
+    public String tambahSiswa(@ModelAttribute SiswaDTO siswaDTO, RedirectAttributes redirectAttributes) {
         // Validasi Username dan Email
-        if (userRepository.findByUsername(siswa.getUsername()) != null) {
+        if (userRepository.findByUsername(siswaDTO.getUsername()) != null) {
             redirectAttributes.addFlashAttribute("errorMessage", "Username sudah digunakan.");
-            redirectAttributes.addFlashAttribute("siswa", siswa);
+            redirectAttributes.addFlashAttribute("siswaDTO", siswaDTO);
             return "redirect:/guru/siswa/tambah";
         }
-        if (userRepository.findByEmail(siswa.getEmail()).isPresent()) {
+        if (userRepository.findByEmail(siswaDTO.getEmail()).isPresent()) {
             redirectAttributes.addFlashAttribute("errorMessage", "Email sudah digunakan.");
-            redirectAttributes.addFlashAttribute("siswa", siswa);
+            redirectAttributes.addFlashAttribute("siswaDTO", siswaDTO);
             return "redirect:/guru/siswa/tambah";
         }
 
-        if (!profilePictureFile.isEmpty()) {
-            String fileName = saveProfilePicture(profilePictureFile);
+        User siswa = new User();
+        siswa.setUsername(siswaDTO.getUsername());
+        siswa.setPassword(passwordEncoder.encode(siswaDTO.getPassword()));
+        siswa.setFullName(siswaDTO.getFullName());
+        siswa.setEmail(siswaDTO.getEmail());
+        siswa.setKelas(siswaDTO.getKelas());
+        siswa.setSchoolName(siswaDTO.getSchoolName());
+        siswa.setRole("SISWA");
+
+        if (siswaDTO.getProfilePictureFile() != null && !siswaDTO.getProfilePictureFile().isEmpty()) {
+            String fileName = saveProfilePicture(siswaDTO.getProfilePictureFile());
             siswa.setPhotoUrl(fileName);
         }
-        siswa.setPassword(passwordEncoder.encode(siswa.getPassword()));
-        siswa.setRole("SISWA");
+
         userRepository.save(siswa);
         redirectAttributes.addFlashAttribute("successMessage", "Siswa berhasil ditambahkan.");
         return "redirect:/guru/dashboard";
@@ -72,38 +81,46 @@ public class SiswaController {
 
     @GetMapping("/edit/{id}")
     public String showEditForm(@PathVariable("id") String id, Model model) {
-        if (!model.containsAttribute("siswa")) {
+        if (!model.containsAttribute("siswaDTO")) {
             User siswa = userRepository.findById(id)
                     .orElseThrow(() -> new IllegalArgumentException("Invalid student Id:" + id));
-            model.addAttribute("siswa", siswa);
+            SiswaDTO siswaDTO = new SiswaDTO();
+            siswaDTO.setId(siswa.getId());
+            siswaDTO.setUsername(siswa.getUsername());
+            siswaDTO.setFullName(siswa.getFullName());
+            siswaDTO.setEmail(siswa.getEmail());
+            siswaDTO.setKelas(siswa.getKelas());
+            siswaDTO.setSchoolName(siswa.getSchoolName());
+            siswaDTO.setPhotoUrl(siswa.getPhotoUrl());
+            model.addAttribute("siswaDTO", siswaDTO);
         }
         return "form_siswa";
     }
 
     @PostMapping("/edit/{id}")
-    public String editSiswa(@PathVariable("id") String id, User siswa, @RequestParam("profilePictureFile") MultipartFile profilePictureFile, RedirectAttributes redirectAttributes) {
+    public String editSiswa(@PathVariable("id") String id, @ModelAttribute SiswaDTO siswaDTO, RedirectAttributes redirectAttributes) {
         User existingSiswa = userRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid student Id:" + id));
 
         // Validasi Email (jika diubah)
-        if (!existingSiswa.getEmail().equals(siswa.getEmail())) {
-            Optional<User> userWithSameEmail = userRepository.findByEmail(siswa.getEmail());
+        if (!existingSiswa.getEmail().equals(siswaDTO.getEmail())) {
+            Optional<User> userWithSameEmail = userRepository.findByEmail(siswaDTO.getEmail());
             if (userWithSameEmail.isPresent()) {
                 redirectAttributes.addFlashAttribute("errorMessage", "Email sudah digunakan oleh pengguna lain.");
-                redirectAttributes.addFlashAttribute("siswa", siswa);
+                redirectAttributes.addFlashAttribute("siswaDTO", siswaDTO);
                 return "redirect:/guru/siswa/edit/" + id;
             }
         }
 
-        if (!profilePictureFile.isEmpty()) {
-            String fileName = saveProfilePicture(profilePictureFile);
+        if (siswaDTO.getProfilePictureFile() != null && !siswaDTO.getProfilePictureFile().isEmpty()) {
+            String fileName = saveProfilePicture(siswaDTO.getProfilePictureFile());
             existingSiswa.setPhotoUrl(fileName);
         }
 
-        existingSiswa.setFullName(siswa.getFullName());
-        existingSiswa.setKelas(siswa.getKelas());
-        existingSiswa.setEmail(siswa.getEmail());
-        existingSiswa.setSchoolName(siswa.getSchoolName());
+        existingSiswa.setFullName(siswaDTO.getFullName());
+        existingSiswa.setKelas(siswaDTO.getKelas());
+        existingSiswa.setEmail(siswaDTO.getEmail());
+        existingSiswa.setSchoolName(siswaDTO.getSchoolName());
         userRepository.save(existingSiswa);
         redirectAttributes.addFlashAttribute("successMessage", "Data siswa berhasil diperbarui.");
         return "redirect:/guru/dashboard";

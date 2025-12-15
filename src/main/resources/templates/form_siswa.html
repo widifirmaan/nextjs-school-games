@@ -15,8 +15,8 @@
         <div class="col-md-6">
             <div class="game-panel">
                 <h2 class="text-center font-weight-bold mb-4" style="font-family: 'Fredoka One', cursive; text-shadow: var(--text-shadow);">
-                    <span th:if="${siswa.id == null}">Tambah Siswa Baru</span>
-                    <span th:unless="${siswa.id == null}">Edit Data Siswa</span>
+                    <span th:if="${siswaDTO.id == null}">Tambah Siswa Baru</span>
+                    <span th:unless="${siswaDTO.id == null}">Edit Data Siswa</span>
                 </h2>
 
                 <!-- Error Message -->
@@ -25,13 +25,13 @@
                     <span th:text="${errorMessage}"></span>
                 </div>
 
-                <form th:action="${siswa.id == null} ? @{/guru/siswa/tambah} : @{/guru/siswa/edit/{id}(id=${siswa.id})}" th:object="${siswa}" method="post" enctype="multipart/form-data">
-                    <div class="mb-3 text-center" th:if="${siswa.photoUrl != null and siswa.photoUrl != ''}">
-                        <img th:src="@{'/uploads/' + ${siswa.photoUrl}}" alt="Profile Picture" class="img-thumbnail" width="150"/>
+                <form th:action="${siswaDTO.id == null} ? @{/guru/siswa/tambah} : @{/guru/siswa/edit/{id}(id=${siswaDTO.id})}" th:object="${siswaDTO}" method="post" enctype="multipart/form-data">
+                    <div class="mb-3 text-center" th:if="${siswaDTO.photoUrl != null and siswaDTO.photoUrl != ''}">
+                        <img th:src="@{'/uploads/' + ${siswaDTO.photoUrl}}" alt="Profile Picture" class="img-thumbnail" width="150"/>
                     </div>
                     <div class="mb-3">
-                        <label for="profilePicture" class="form-label">Ganti Foto Profil</label>
-                        <input type="file" class="form-control" id="profilePicture" name="profilePictureFile">
+                        <label for="profilePictureFile" class="form-label">Ganti Foto Profil</label>
+                        <input type="file" class="form-control" id="profilePictureFile" th:field="*{profilePictureFile}">
                     </div>
                     <div class="mb-3">
                         <label for="fullName" class="form-label">Nama Lengkap</label>
@@ -49,11 +49,11 @@
                         <label for="email" class="form-label">Email</label>
                         <input type="email" class="form-control" id="email" th:field="*{email}" required>
                     </div>
-                    <div class="mb-3" th:if="${siswa.id == null}">
+                    <div class="mb-3" th:if="${siswaDTO.id == null}">
                         <label for="username" class="form-label">Username</label>
                         <input type="text" class="form-control" id="username" th:field="*{username}" required>
                     </div>
-                    <div class="mb-3" th:if="${siswa.id == null}">
+                    <div class="mb-3" th:if="${siswaDTO.id == null}">
                         <label for="password" class="form-label">Password</label>
                         <input type="password" class="form-control" id="password" th:field="*{password}" required>
                     </div>
