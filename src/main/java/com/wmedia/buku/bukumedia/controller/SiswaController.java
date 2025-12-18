@@ -48,7 +48,6 @@ public class SiswaController {
 
     @PostMapping("/tambah")
     public String tambahSiswa(@ModelAttribute SiswaDTO siswaDTO, RedirectAttributes redirectAttributes) {
-        // Validasi Username dan Email
         if (userRepository.findByUsername(siswaDTO.getUsername()) != null) {
             redirectAttributes.addFlashAttribute("errorMessage", "Username sudah digunakan.");
             redirectAttributes.addFlashAttribute("siswaDTO", siswaDTO);
@@ -59,7 +58,7 @@ public class SiswaController {
             redirectAttributes.addFlashAttribute("siswaDTO", siswaDTO);
             return "redirect:/guru/siswa/tambah";
         }
-
+        
         User siswa = new User();
         siswa.setUsername(siswaDTO.getUsername());
         siswa.setPassword(passwordEncoder.encode(siswaDTO.getPassword()));

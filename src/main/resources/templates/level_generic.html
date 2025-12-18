@@ -23,11 +23,11 @@
                     th:text="'LEVEL ' + ${levelNumber} + ': PERTANYAAN'">
                     LEVEL X: PERTANYAAN
                 </h2>
-                <form id="levelForm" th:action="@{'/siswa/level/' + ${levelNumber} + '/submit'}" method="post"
+                <form id="levelForm" th:action="@{|/siswa/level/${levelNumber}/submit|}" method="post"
                       th:with="questionText='Pertanyaan_untuk_Level_' + ${levelNumber}">
                     <div class="mb-3">
-                        <label for="jawaban1" class="form-label" th:text="'Pertanyaan untuk Level ' + ${levelNumber}"></label>
-                        <input type="text" class="form-control" id="jawaban1"
+                        <label for="q1" class="form-label" th:text="'Pertanyaan untuk Level ' + ${levelNumber}"></label>
+                        <input type="text" class="form-control" id="q1"
                                th:name="${questionText}"
                                th:value="${levelData != null ? levelData[questionText] : ''}" required>
                     </div>
