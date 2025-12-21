@@ -8,12 +8,9 @@ import java.util.Map;
  * which is more efficient than fetching the entire User entity.
  * The method names here must match the getter methods of the target entity (User).
  */
-public interface SiswaSummary {
+
+public interface UserSummary {
     String getId();
     String getUsername();
-    String getFullName();
-    String getKelas();
-    String getSchoolName();
-    String getEmail();
-    Map<String, String> getLevels();
+    String getRole();
 }

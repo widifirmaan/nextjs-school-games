@@ -1,6 +1,7 @@
 package com.wmedia.buku.bukumedia.controller;
 
 import com.wmedia.buku.bukumedia.dto.SiswaSummary;
+import com.wmedia.buku.bukumedia.dto.UserSummary;
 import com.wmedia.buku.bukumedia.model.User;
 import com.wmedia.buku.bukumedia.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;

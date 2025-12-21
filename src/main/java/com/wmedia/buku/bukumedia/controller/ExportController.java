@@ -2,7 +2,7 @@ package com.wmedia.buku.bukumedia.controller;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.wmedia.buku.bukumedia.model.User;
+import com.wmedia.buku.bukumedia.dto.SiswaSummary;
 import com.wmedia.buku.bukumedia.repository.UserRepository;
 import com.wmedia.buku.bukumedia.service.ExcelExportService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,8 +35,8 @@ public class ExportController {
                               @RequestParam(required = false) String kelas,
                               @RequestParam(required = false) String searchName) throws IOException {
 
-        // 1. Fetch and filter data
-        List<User> filteredSiswa = userRepository.findByRole("SISWA").stream()
+        // 1. Fetch and filter data using the correct projection
+        List<SiswaSummary> filteredSiswa = userRepository.findSummaryByRole("SISWA").stream()
             .filter(s -> schoolName == null || schoolName.isEmpty() || s.getSchoolName().equals(schoolName))
             .filter(s -> kelas == null || kelas.isEmpty() || s.getKelas().equals(kelas))
             .filter(s -> searchName == null || searchName.isEmpty() || s.getFullName().toLowerCase().contains(searchName.toLowerCase()))
@@ -50,7 +50,7 @@ public class ExportController {
 
 
         List<List<Object>> data = new ArrayList<>();
-        for (User siswa : filteredSiswa) {
+        for (SiswaSummary siswa : filteredSiswa) {
             List<Object> row = new ArrayList<>();
             row.add(siswa.getFullName());
             row.add(siswa.getKelas());

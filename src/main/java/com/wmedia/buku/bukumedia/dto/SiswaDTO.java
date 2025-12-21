@@ -1,6 +1,8 @@
 package com.wmedia.buku.bukumedia.dto;
 
 import org.springframework.web.multipart.MultipartFile;
+import java.util.HashMap;
+import java.util.Map;
 
 public class SiswaDTO {
 
@@ -9,6 +11,7 @@ public class SiswaDTO {
     private String password;
     private String fullName;
     private String email;
+    private Map<String, String> levels = new HashMap<>();
     private String kelas;
     private String schoolName;
     
@@ -24,6 +27,14 @@ public class SiswaDTO {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public Map<String, String> getLevels() {
+        return levels;
+    }
+
+    public void setLevels(Map<String, String> levels) {
+        this.levels = levels;
     }
 
     public String getUsername() {

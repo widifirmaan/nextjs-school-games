@@ -50,12 +50,12 @@ public class ExcelExportService {
             }
         }
 
-        // 4. Auto-size columns
+
         for (int i = 0; i < headers.size(); i++) {
             sheet.autoSizeColumn(i);
         }
 
-        // 5. Write to Response
+
         response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
         response.setHeader("Content-Disposition", "attachment; filename=" + fileName);
         workbook.write(response.getOutputStream());
