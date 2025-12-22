@@ -1,0 +1,19 @@
+services:
+  app:
+    build: .
+    ports:
+      - "8081:8081"
+    depends_on:
+      - mongo
+    volumes:
+      - ./user-data:/app/user-data
+
+  mongo:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
+volumes:
+  mongo-data:
