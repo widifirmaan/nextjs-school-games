@@ -94,7 +94,10 @@ public class SiswaDTO {
     }
 
     public String getPhotoUrl() {
-        return photoUrl;
+        if (photoUrl == null || photoUrl.trim().isEmpty()) {
+            return "/uploads/0eb4aa23-5d28-4142-88c7-7af41ba46626.png";
+        }
+        return "/uploads/" + photoUrl;
     }
 
     public void setPhotoUrl(String photoUrl) {

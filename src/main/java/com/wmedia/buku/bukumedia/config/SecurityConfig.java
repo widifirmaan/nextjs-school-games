@@ -21,9 +21,9 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http, AccessDeniedHandler accessDeniedHandler) throws Exception {
         http
                 .authorizeHttpRequests(authz -> authz
-                        .antMatchers("/login", "/css/**", "/js/**", "/uploads/**").permitAll()
-                        .antMatchers("/guru/**").hasRole("GURU")
-                        .antMatchers("/siswa/**").hasRole("SISWA")
+                        .requestMatchers("/login", "/css/**", "/js/**", "/uploads/**").permitAll()
+                        .requestMatchers("/guru/**").hasRole("GURU")
+                        .requestMatchers("/siswa/**").hasRole("SISWA")
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form

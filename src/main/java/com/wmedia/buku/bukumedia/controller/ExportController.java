@@ -3,14 +3,14 @@ package com.wmedia.buku.bukumedia.controller;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wmedia.buku.bukumedia.dto.SiswaSummary;
-import com.wmedia.buku.bukumedia.repository.UserRepository;
 import com.wmedia.buku.bukumedia.service.ExcelExportService;
+import com.wmedia.buku.bukumedia.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 public class ExportController {
 
     @Autowired
-    private UserRepository userRepository;
+    private UserService userService;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -36,7 +36,7 @@ public class ExportController {
                               @RequestParam(required = false) String searchName) throws IOException {
 
         // 1. Fetch and filter data using the correct projection
-        List<SiswaSummary> filteredSiswa = userRepository.findSummaryByRole("SISWA").stream()
+        List<SiswaSummary> filteredSiswa = userService.getAllSiswaSummary().stream()
             .filter(s -> schoolName == null || schoolName.isEmpty() || s.getSchoolName().equals(schoolName))
             .filter(s -> kelas == null || kelas.isEmpty() || s.getKelas().equals(kelas))
             .filter(s -> searchName == null || searchName.isEmpty() || s.getFullName().toLowerCase().contains(searchName.toLowerCase()))

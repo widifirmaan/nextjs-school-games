@@ -26,7 +26,7 @@
                         <div class="profile-section">
                             <div class="avatar-circle">
                                 <!-- Corrected Image Path -->
-                                <img th:if="${user.photoUrl != null and user.photoUrl != ''}" th:src="@{'/uploads/' + ${user.photoUrl}}" alt="Foto Profil" class="profile-pic">
+                                <img th:if="${user.photoUrl != null and user.photoUrl != ''}" th:src="@{|/uploads/${user.photoUrl}|}" alt="Foto Profil" class="profile-pic">
                                 <!-- Fallback Icon -->
                                 <i th:if="${user.photoUrl == null or user.photoUrl == ''}" class="fas fa-user-astronaut" style="font-size: 4rem; color: #fff;"></i>
                             </div>

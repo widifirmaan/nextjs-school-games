@@ -1,9 +1,7 @@
 package com.wmedia.buku.bukumedia.controller;
 
 import com.wmedia.buku.bukumedia.dto.SiswaSummary;
-import com.wmedia.buku.bukumedia.dto.UserSummary;
-import com.wmedia.buku.bukumedia.model.User;
-import com.wmedia.buku.bukumedia.repository.UserRepository;
+import com.wmedia.buku.bukumedia.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -22,7 +20,8 @@ import java.util.stream.IntStream;
 
 public class DashboardController {
     @Autowired
-    private UserRepository userRepository;
+    private UserService userService;
+
     @GetMapping("/")
     public String rootRedirect() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -36,15 +35,15 @@ public class DashboardController {
         }
         return "redirect:/login";
     }
+
     @GetMapping("/guru/dashboard")
     public String guruDashboard(Authentication authentication, Model model,
             @RequestParam(required = false) String schoolName,
             @RequestParam(required = false) String kelas,
             @RequestParam(required = false) String searchName) {
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-        User user = userRepository.findByUsername(userDetails.getUsername());
-        model.addAttribute("user", user);
-        List<SiswaSummary> allSiswa = userRepository.findSummaryByRole("SISWA");
+        model.addAttribute("user", userService.getUserDTOByUsername(userDetails.getUsername()));
+        List<SiswaSummary> allSiswa = userService.getAllSiswaSummary();
         List<String> schools = allSiswa.stream().map(SiswaSummary::getSchoolName).distinct().sorted()
                 .collect(Collectors.toList());
         List<String> classes = allSiswa.stream().map(SiswaSummary::getKelas).distinct().sorted()
@@ -64,11 +63,11 @@ public class DashboardController {
         model.addAttribute("searchName", searchName);
         return "guru_dashboard";
     }
+
     @GetMapping("/siswa/dashboard")
     public String siswaDashboard(Authentication authentication, Model model) {
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-        User user = userRepository.findByUsername(userDetails.getUsername());
-        model.addAttribute("user", user);
+        model.addAttribute("user", userService.getSiswaDTOByUsername(userDetails.getUsername()));
         return "siswa_dashboard";
     }
 
