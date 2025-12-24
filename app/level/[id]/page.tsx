@@ -9,6 +9,10 @@ import Level3Games from '@/app/components/Level3Games'
 import Level4Games from '@/app/components/Level4Games'
 import Level5Games from '@/app/components/Level5Games'
 import Level6Drawing from '@/app/components/Level6Drawing'
+import Level7Games from '@/app/components/Level7Games'
+import Level8Games from '@/app/components/Level8Games'
+import Level9Games from '@/app/components/Level9Games'
+import Level10Games from '@/app/components/Level10Games'
 
 export default function LevelPage({ params }: { params: { id: string } }) {
     const router = useRouter()
@@ -44,9 +48,9 @@ export default function LevelPage({ params }: { params: { id: string } }) {
         if (e && e.preventDefault) e.preventDefault()
 
         // If it's a component-based submit (like Level 1 & 2 & 3 & 4 & 5 & 6), the data comes as argument
-        const dataToSubmit = (['1', '2', '3', '4', '5', '6'].includes(levelId)) ? e : answers;
+        const dataToSubmit = (['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'].includes(levelId)) ? e : answers;
 
-        if (!dataToSubmit && !['1', '2', '3', '4', '5', '6'].includes(levelId)) {
+        if (!dataToSubmit && !['1', '2', '3', '4', '5', '6', '7', '8', '9'].includes(levelId)) {
             if (!confirm("Apakah Anda yakin ingin mengirim jawaban ini?")) return;
         }
 
@@ -97,6 +101,22 @@ export default function LevelPage({ params }: { params: { id: string } }) {
 
     if (levelId === '6') {
         return <Level6Drawing levelId={levelId} onComplete={handleSubmit} initialData={answers} />
+    }
+
+    if (levelId === '7') {
+        return <Level7Games levelId={levelId} onComplete={handleSubmit} initialData={answers} />
+    }
+
+    if (levelId === '8') {
+        return <Level8Games levelId={levelId} onComplete={handleSubmit} initialData={answers} />
+    }
+
+    if (levelId === '9') {
+        return <Level9Games levelId={levelId} onComplete={handleSubmit} initialData={answers} />
+    }
+
+    if (levelId === '10') {
+        return <Level10Games levelId={levelId} onComplete={handleSubmit} initialData={answers} />
     }
 
 
