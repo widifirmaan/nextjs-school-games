@@ -5,6 +5,10 @@ import { useRouter } from 'next/navigation'
 import { LEVEL_DATA } from '@/lib/gameData'
 import Level1WordSearch from '@/app/components/Level1WordSearch'
 import Level2IceCream from '@/app/components/Level2IceCream'
+import Level3Games from '@/app/components/Level3Games'
+import Level4Games from '@/app/components/Level4Games'
+import Level5Games from '@/app/components/Level5Games'
+import Level6Drawing from '@/app/components/Level6Drawing'
 
 export default function LevelPage({ params }: { params: { id: string } }) {
     const router = useRouter()
@@ -39,10 +43,10 @@ export default function LevelPage({ params }: { params: { id: string } }) {
         // Handle explicit event if coming from form, otherwise handled by component
         if (e && e.preventDefault) e.preventDefault()
 
-        // If it's a component-based submit (like Level 1 & 2), the data comes as argument
-        const dataToSubmit = (levelId === '1' || levelId === '2') ? e : answers;
+        // If it's a component-based submit (like Level 1 & 2 & 3 & 4 & 5 & 6), the data comes as argument
+        const dataToSubmit = (['1', '2', '3', '4', '5', '6'].includes(levelId)) ? e : answers;
 
-        if (!dataToSubmit && levelId !== '1' && levelId !== '2') {
+        if (!dataToSubmit && !['1', '2', '3', '4', '5', '6'].includes(levelId)) {
             if (!confirm("Apakah Anda yakin ingin mengirim jawaban ini?")) return;
         }
 
@@ -77,6 +81,22 @@ export default function LevelPage({ params }: { params: { id: string } }) {
 
     if (levelId === '2') {
         return <Level2IceCream levelId={levelId} onComplete={handleSubmit} initialData={answers} />
+    }
+
+    if (levelId === '3') {
+        return <Level3Games levelId={levelId} onComplete={handleSubmit} initialData={answers} />
+    }
+
+    if (levelId === '4') {
+        return <Level4Games levelId={levelId} onComplete={handleSubmit} initialData={answers} />
+    }
+
+    if (levelId === '5') {
+        return <Level5Games levelId={levelId} onComplete={handleSubmit} initialData={answers} />
+    }
+
+    if (levelId === '6') {
+        return <Level6Drawing levelId={levelId} onComplete={handleSubmit} initialData={answers} />
     }
 
 

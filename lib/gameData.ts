@@ -10,21 +10,40 @@ export const LEVEL_DATA: Record<string, { title: string, questions: { id: string
         ]
     },
     "3": {
-        title: "LEVEL 3: MATEMATIKA DASAR",
+        title: "LEVEL 3: POHON HARAPAN",
         questions: [
-            { id: "1_tambah_1_sama_dengan?", label: "1 + 1 = ?" },
-            { id: "Akar_kuadrat_dari_144?", label: "Akar kuadrat dari 144?" }
+            { id: "merasa", label: "Aku merasa" },
+            { id: "berharap", label: "Aku berharap" },
+            { id: "butuh", label: "Aku butuh" },
+            { id: "ingin", label: "Aku ingin" }
         ]
     },
     "4": {
-        title: "LEVEL 4: PENGETAHUAN UMUM",
+        title: "LEVEL 4: MIMPI TERBESAR",
         questions: [
-            { id: "Planet_terbesar_di_tata_surya?", label: "Planet terbesar di tata surya?" },
-            { id: "Hewan_tercepat_di_dunia?", label: "Hewan tercepat di dunia?" }
+            { id: "mimpi", label: "Tuliskan satu mimpi terbesarmu disini" }
         ]
     },
-    // Generated Levels 5-30
-    ...Array.from({ length: 26 }, (_, i) => i + 5).reduce((acc, level) => ({
+    "5": {
+        title: "LEVEL 5: ANXIETY ELIXIR",
+        questions: [
+            { id: "elixir_1", label: "Elixir 1" },
+            { id: "elixir_2", label: "Elixir 2" },
+            { id: "elixir_3", label: "Elixir 3" },
+            { id: "elixir_4", label: "Elixir 4" }
+        ]
+    },
+    "6": {
+        title: "LEVEL 6: GAMBAR EKSPRESI",
+        questions: [
+            { id: "face_senang", label: "Wajah Senang" },
+            { id: "face_sedih", label: "Wajah Sedih" },
+            { id: "face_marah", label: "Wajah Marah" },
+            { id: "face_terkejut", label: "Wajah Terkejut" }
+        ]
+    },
+    // Generated Levels 7-30
+    ...Array.from({ length: 24 }, (_, i) => i + 7).reduce((acc, level) => ({
         ...acc,
         [level.toString()]: {
             title: `LEVEL ${level}: TANTANGAN ${level}`,

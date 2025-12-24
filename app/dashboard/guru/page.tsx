@@ -183,7 +183,8 @@ export default function GuruDashboard() {
                             row[`Level ${i}`] = relevantKeys.map(k => {
                                 const qConfig = levelConfig?.questions?.find(q => q.id === k);
                                 const label = qConfig ? qConfig.label : k.replace(/_/g, ' ');
-                                return `${label} = ${answers[k]}`;
+                                const val = i === 6 ? '[Gambar]' : answers[k];
+                                return `${label} = ${val}`;
                             }).join('\n');
                         } else {
                             row[`Level ${i}`] = '-';
@@ -432,9 +433,29 @@ export default function GuruDashboard() {
                                                         <p className="font-bold text-white pt-1">{label}</p>
                                                     </div>
                                                     <div className="pl-11">
-                                                        <div className="bg-[#3e2723]/50 p-3 rounded-lg text-green-200 font-medium border-l-4 border-green-500 shadow-inner">
-                                                            {String(value)}
-                                                        </div>
+                                                        {selectedLevelId === '6' ? (
+                                                            <div className="bg-white p-2 rounded-lg border-2 border-green-500 overflow-hidden relative">
+                                                                <svg viewBox="0 0 500 500" className="w-40 h-40 mx-auto">
+                                                                    {(() => {
+                                                                        try {
+                                                                            const paths = typeof value === 'string' ? JSON.parse(value) : value;
+                                                                            if (Array.isArray(paths)) {
+                                                                                return paths.map((d: string, i: number) => (
+                                                                                    <path key={i} d={d} stroke="black" strokeWidth="15" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+                                                                                ));
+                                                                            }
+                                                                            return null;
+                                                                        } catch {
+                                                                            return null;
+                                                                        }
+                                                                    })()}
+                                                                </svg>
+                                                            </div>
+                                                        ) : (
+                                                            <div className="bg-[#3e2723]/50 p-3 rounded-lg text-green-200 font-medium border-l-4 border-green-500 shadow-inner">
+                                                                {String(value)}
+                                                            </div>
+                                                        )}
                                                     </div>
                                                 </div>
                                             );
