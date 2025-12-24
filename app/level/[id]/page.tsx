@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { LEVEL_DATA } from '@/lib/gameData'
 import Level1WordSearch from '@/app/components/Level1WordSearch'
+import Level2IceCream from '@/app/components/Level2IceCream'
 
 export default function LevelPage({ params }: { params: { id: string } }) {
     const router = useRouter()
@@ -38,10 +39,10 @@ export default function LevelPage({ params }: { params: { id: string } }) {
         // Handle explicit event if coming from form, otherwise handled by component
         if (e && e.preventDefault) e.preventDefault()
 
-        // If it's a component-based submit (like Level 1), the data comes as argument
-        const dataToSubmit = (levelId === '1') ? e : answers;
+        // If it's a component-based submit (like Level 1 & 2), the data comes as argument
+        const dataToSubmit = (levelId === '1' || levelId === '2') ? e : answers;
 
-        if (!dataToSubmit && levelId !== '1') {
+        if (!dataToSubmit && levelId !== '1' && levelId !== '2') {
             if (!confirm("Apakah Anda yakin ingin mengirim jawaban ini?")) return;
         }
 
@@ -73,6 +74,11 @@ export default function LevelPage({ params }: { params: { id: string } }) {
     if (levelId === '1') {
         return <Level1WordSearch levelId={levelId} onComplete={handleSubmit} initialData={answers} />
     }
+
+    if (levelId === '2') {
+        return <Level2IceCream levelId={levelId} onComplete={handleSubmit} initialData={answers} />
+    }
+
 
     return (
         <div className="min-h-screen bg-[#b3e5fc] py-10 px-4 font-fredoka" style={{ backgroundImage: 'radial-gradient(#90caf9 10%, transparent 10%)', backgroundSize: '20px 20px' }}>

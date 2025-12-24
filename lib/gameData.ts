@@ -4,10 +4,9 @@ export const LEVEL_DATA: Record<string, { title: string, questions: { id: string
         questions: [{ id: "kata_pilihan", label: "Kata Pilihan" }]
     },
     "2": {
-        title: "LEVEL 2: SEJARAH & GEOGRAFI",
+        title: "LEVEL 2: SCOOP OF HOPE",
         questions: [
-            { id: "Tahun_berapa_Indonesia_merdeka?", label: "Tahun berapa Indonesia merdeka?" },
-            { id: "Ibukota_Indonesia_adalah?", label: "Ibukota Indonesia adalah?" }
+            { id: "harapan", label: "Harapanmu" }
         ]
     },
     "3": {
