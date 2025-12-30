@@ -75,8 +75,20 @@ export const LEVEL_DATA: Record<string, { title: string, questions: { id: string
             { id: "ring_5", label: "Ring 5" }
         ]
     },
-    // Generated Levels 11-30
-    ...Array.from({ length: 20 }, (_, i) => i + 11).reduce((acc, level) => ({
+    "11": {
+        title: "LEVEL 11",
+        questions: [
+            { id: "circle_input", label: "Jawaban" }
+        ]
+    },
+    "12": {
+        title: "LEVEL 12: REFLEKSI CERMIN",
+        questions: [
+            { id: "mirror_input", label: "Refleksi" }
+        ]
+    },
+    // Generated Levels 13-30
+    ...Array.from({ length: 18 }, (_, i) => i + 13).reduce((acc, level) => ({
         ...acc,
         [level.toString()]: {
             title: `LEVEL ${level}: TANTANGAN ${level}`,

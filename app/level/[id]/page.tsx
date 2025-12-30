@@ -13,6 +13,8 @@ import Level7Games from '@/app/components/Level7Games'
 import Level8Games from '@/app/components/Level8Games'
 import Level9Games from '@/app/components/Level9Games'
 import Level10Games from '@/app/components/Level10Games'
+import Level11Games from '@/app/components/Level11Games'
+import Level12Games from '@/app/components/Level12Games'
 
 export default function LevelPage({ params }: { params: { id: string } }) {
     const router = useRouter()
@@ -48,7 +50,7 @@ export default function LevelPage({ params }: { params: { id: string } }) {
         if (e && e.preventDefault) e.preventDefault()
 
         // If it's a component-based submit (like Level 1 & 2 & 3 & 4 & 5 & 6), the data comes as argument
-        const dataToSubmit = (['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'].includes(levelId)) ? e : answers;
+        const dataToSubmit = (['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'].includes(levelId)) ? e : answers;
 
         if (!dataToSubmit && !['1', '2', '3', '4', '5', '6', '7', '8', '9'].includes(levelId)) {
             if (!confirm("Apakah Anda yakin ingin mengirim jawaban ini?")) return;
@@ -117,6 +119,14 @@ export default function LevelPage({ params }: { params: { id: string } }) {
 
     if (levelId === '10') {
         return <Level10Games levelId={levelId} onComplete={handleSubmit} initialData={answers} />
+    }
+
+    if (levelId === '11') {
+        return <Level11Games levelId={levelId} onComplete={handleSubmit} initialData={answers} />
+    }
+
+    if (levelId === '12') {
+        return <Level12Games levelId={levelId} onComplete={handleSubmit} initialData={answers} />
     }
 
 

@@ -103,8 +103,8 @@ export default function Level2IceCream({ levelId, onComplete, initialData }: Lev
                             <div className="absolute bottom-6 right-4">
                                 <button
                                     type="submit"
-                                    disabled={submitting}
-                                    className="bg-[#00c853] hover:bg-[#00e676] text-white rounded-full px-6 py-3 font-bold shadow-lg flex items-center gap-2 border-b-4 border-[#1b5e20] active:border-b-0 active:translate-y-1 transition-all disabled:opacity-50 disabled:cursor-not-allowed text-sm md:text-base"
+                                    disabled={submitting || (initialData && Object.keys(initialData).length > 0)}
+                                    className="px-8 py-3 bg-[#ff4081] hover:bg-[#f50057] text-white rounded-full font-bold shadow-lg transform transition active:scale-95 flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
                                 >
                                     {submitting ? (
                                         <>

@@ -256,10 +256,10 @@ export default function Level1WordSearch({ levelId, onComplete, initialData }: W
                             </button>
                             <button
                                 onClick={handlePreSubmit}
-                                disabled={submitting || selectedCells.size === 0}
+                                disabled={submitting || selectedCells.size === 0 || (initialData && !!initialData['kata_pilihan'])}
                                 className="px-8 py-3 bg-[#00c853] hover:bg-[#00e676] text-white rounded-full font-bold border-b-4 border-[#1b5e20] active:border-b-0 active:translate-y-1 transition-all uppercase tracking-wide flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed shadow-[0_4px_0_rgba(0,0,0,0.2)]"
                             >
-                                {submitting ? 'Menyimpan...' : 'Pilih Kata Ini'}
+                                {(initialData && initialData['kata_pilihan']) ? 'Sudah Disimpan' : (submitting ? 'Menyimpan...' : 'Pilih Kata Ini')}
                             </button>
                         </div>
                     </div>

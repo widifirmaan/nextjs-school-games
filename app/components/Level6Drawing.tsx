@@ -228,10 +228,10 @@ export default function Level6Drawing({ levelId, onComplete, initialData }: Leve
 
                                 <button
                                     onClick={handleSubmit}
-                                    disabled={submitting}
+                                    disabled={submitting || (initialData && Object.keys(initialData).length > 0)}
                                     className="bg-[#00c853] hover:bg-[#00e676] text-white rounded-full px-6 py-3 font-bold shadow-lg flex items-center gap-2 border-b-4 border-[#1b5e20] active:border-b-0 active:translate-y-1 transition-all disabled:opacity-50 disabled:cursor-not-allowed text-sm md:text-base"
                                 >
-                                    {submitting ? "Menyimpan..." : "Simpan Gambar"}
+                                    {(initialData && Object.keys(initialData).length > 0) ? "Sudah Disimpan" : (submitting ? "Menyimpan..." : "Simpan Gambar")}
                                 </button>
                             </div>
                         </div>
