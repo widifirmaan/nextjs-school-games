@@ -36,6 +36,7 @@ export default function GuruDashboard() {
     const [showLevelModal, setShowLevelModal] = useState(false)
     const [selectedLevelData, setSelectedLevelData] = useState<any>(null)
     const [selectedStudentName, setSelectedStudentName] = useState('')
+    const [selectedStudentId, setSelectedStudentId] = useState('')
     const [selectedLevelId, setSelectedLevelId] = useState('')
 
     // Filters
@@ -74,12 +75,13 @@ export default function GuruDashboard() {
         setShowModal(true)
     }
 
-    const openLevelDetail = (studentName: string, levelKey: string, levelJson: string) => {
+    const openLevelDetail = (studentId: string, studentName: string, levelKey: string, levelJson: string) => {
         try {
             const data = JSON.parse(levelJson);
             const levelId = levelKey.replace('level', '');
             setSelectedLevelData(data);
             setSelectedStudentName(studentName);
+            setSelectedStudentId(studentId);
             setSelectedLevelId(levelId);
             setShowLevelModal(true);
         } catch (e) {
@@ -134,6 +136,37 @@ export default function GuruDashboard() {
     }
 
 
+
+    const handleResetLevel = async () => {
+        if (!confirm("Apakah Anda yakin ingin mereset jawaban siswa untuk level ini? Siswa harus menjawab ulang.")) return;
+
+        try {
+            const student = students.find(s => s._id === selectedStudentId);
+            if (!student || !student.levels) return;
+
+            const updatedLevels = { ...student.levels };
+            const levelKey = `level${selectedLevelId}`;
+            delete updatedLevels[levelKey];
+
+            const res = await fetch(`/api/users/${selectedStudentId}`, {
+                method: 'PUT',
+                body: JSON.stringify({ levels: updatedLevels }),
+                headers: { 'Content-Type': 'application/json' }
+            });
+
+            if (res.ok) {
+                const updatedUser = await res.json();
+                setStudents(students.map(s => s._id === selectedStudentId ? updatedUser : s));
+                setShowLevelModal(false);
+                alert("Jawaban berhasil direset.");
+            } else {
+                alert("Gagal mereset jawaban.");
+            }
+        } catch (e) {
+            console.error(e);
+            alert("Terjadi kesalahan.");
+        }
+    }
 
     // Filter Logic
     const uniqueSchools = useMemo(() => {
@@ -327,7 +360,7 @@ export default function GuruDashboard() {
                                                 <td key={lvl} className="px-2 py-3 text-center border-r border-gray-200">
                                                     {hasLevel ? (
                                                         <button
-                                                            onClick={() => openLevelDetail(student.fullName, levelKey, student.levels![levelKey])}
+                                                            onClick={() => openLevelDetail(student._id, student.fullName, levelKey, student.levels![levelKey])}
                                                             className="flex items-center justify-center w-6 h-6 rounded-full bg-green-500 text-white mx-auto hover:scale-110 transition-transform shadow-sm"
                                                             title="Lihat Detail"
                                                         >
@@ -469,6 +502,20 @@ export default function GuruDashboard() {
                                             <p className="font-bold text-lg">Tidak ada jawaban tersimpan</p>
                                         </div>
                                     )}
+
+                                    {/* Reset Button */}
+                                    <div className="mt-8 mb-4 flex justify-center border-t border-[#795548] pt-6">
+                                        <button
+                                            onClick={handleResetLevel}
+                                            className="bg-red-500 hover:bg-red-600 text-white font-fredoka font-bold py-3 px-8 rounded-full border-b-4 border-red-700 shadow-xl uppercase tracking-wide flex items-center gap-2 active:border-b-2 active:translate-y-1 transition-all"
+                                        >
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                                                <path fillRule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z" />
+                                                <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z" />
+                                            </svg>
+                                            Reset Jawaban
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
 

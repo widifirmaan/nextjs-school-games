@@ -13,9 +13,13 @@ export default function StudentDashboardClient({ user, completedLevels }: Studen
     const [showLogoutModal, setShowLogoutModal] = useState(false)
     const levels = Array.from({ length: 30 }, (_, i) => i + 1);
 
-    // Check if level is unlocked (previous level completed or it's level 1)
+    // Find the first level that hasn't been completed yet
+    const firstIncompleteLevel = levels.find(l => !completedLevels.includes(`level${l}`)) || levels.length + 1;
+
+    // Check if level is unlocked
+    // Rule: Unlocked if it's already completed OR if it's the specific next step (filling the gap)
     const isLevelUnlocked = (level: number) => {
-        return level === 1 || completedLevels.includes(`level${level - 1}`);
+        return completedLevels.includes(`level${level}`) || level === firstIncompleteLevel;
     };
 
     const isLevelCompleted = (level: number) => {

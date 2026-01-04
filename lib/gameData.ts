@@ -142,8 +142,37 @@ export const LEVEL_DATA: Record<string, { title: string, questions: { id: string
             { id: "grateful_3", label: "Momen 3" }
         ]
     },
-    // Generated Levels 21-30
-    ...Array.from({ length: 10 }, (_, i) => i + 21).reduce((acc, level) => ({
+    "21": {
+        title: "LEVEL 21: ARE YOU OKAY?",
+        questions: [
+            { id: "splash_1", label: "Apa yang mengganggumu?" },
+            { id: "splash_2", label: "Apa yang kamu rasakan?" },
+            { id: "splash_4", label: "Apa yang kamu butuhkan?" },
+            { id: "splash_5", label: "Apa harapanmu?" }
+        ]
+    },
+    "22": {
+        title: "LEVEL 22: KOMPAS TUJUAN",
+        questions: [
+            { id: "main_goal", label: "Tuliskan tujuan utamamu minggu ini..." }
+        ]
+    },
+    "23": {
+        title: "LEVEL 23: SURAT MASA DEPAN",
+        questions: [
+            { id: "future_letter", label: "Tulis surat untuk dirimu di masa depan..." }
+        ]
+    },
+    "24": {
+        title: "LEVEL 24: TANGGA PERUBAHAN",
+        questions: [
+            { id: "name_input", label: "My Name is..." },
+            { id: "change_goal", label: "Hal yang ingin saya ubah" },
+            { id: "change_steps", label: "Langkah-langkahnya" }
+        ]
+    },
+    // Generated Levels 25-30
+    ...Array.from({ length: 6 }, (_, i) => i + 25).reduce((acc, level) => ({
         ...acc,
         [level.toString()]: {
             title: `LEVEL ${level}: TANTANGAN ${level}`,

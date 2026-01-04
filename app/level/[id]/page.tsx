@@ -23,6 +23,10 @@ import Level17Games from '@/app/components/Level17Games'
 import Level18Games from '@/app/components/Level18Games'
 import Level19Games from '@/app/components/Level19Games'
 import Level20Games from '@/app/components/Level20Games'
+import Level21Games from '@/app/components/Level21Games'
+import Level22Games from '@/app/components/Level22Games'
+import Level23Games from '@/app/components/Level23Games'
+import Level24Games from '@/app/components/Level24Games'
 
 export default function LevelPage({ params }: { params: { id: string } }) {
     const router = useRouter()
@@ -58,7 +62,7 @@ export default function LevelPage({ params }: { params: { id: string } }) {
         if (e && e.preventDefault) e.preventDefault()
 
         // If it's a component-based submit (like Level 1 & 2 & 3 & 4 & 5 & 6), the data comes as argument
-        const dataToSubmit = (['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20'].includes(levelId)) ? e : answers;
+        const dataToSubmit = (['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24'].includes(levelId)) ? e : answers;
 
         if (!dataToSubmit && !['1', '2', '3', '4', '5', '6', '7', '8', '9'].includes(levelId)) {
             if (!confirm("Apakah Anda yakin ingin mengirim jawaban ini?")) return;
@@ -167,6 +171,22 @@ export default function LevelPage({ params }: { params: { id: string } }) {
 
     if (levelId === '20') {
         return <Level20Games levelId={levelId} onComplete={handleSubmit} initialData={answers} />
+    }
+
+    if (levelId === '21') {
+        return <Level21Games levelId={levelId} onComplete={handleSubmit} initialData={answers} />
+    }
+
+    if (levelId === '22') {
+        return <Level22Games levelId={levelId} onComplete={handleSubmit} initialData={answers} />
+    }
+
+    if (levelId === '23') {
+        return <Level23Games levelId={levelId} onComplete={handleSubmit} initialData={answers} />
+    }
+
+    if (levelId === '24') {
+        return <Level24Games levelId={levelId} onComplete={handleSubmit} initialData={answers} />
     }
 
 
