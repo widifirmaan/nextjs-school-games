@@ -87,8 +87,63 @@ export const LEVEL_DATA: Record<string, { title: string, questions: { id: string
             { id: "mirror_input", label: "Refleksi" }
         ]
     },
-    // Generated Levels 13-30
-    ...Array.from({ length: 18 }, (_, i) => i + 13).reduce((acc, level) => ({
+    "13": {
+        title: "LEVEL 13: EKSPRESI BEBAS",
+        questions: [
+            { id: "canvas_full", label: "Gambar Bebas" }
+        ]
+    },
+    "14": {
+        title: "LEVEL 14: REFLEKSI",
+        questions: [
+            { id: "box_orange", label: "Kotak Orange" }
+        ]
+    },
+    "15": {
+        title: "LEVEL 15: IMAJINASI",
+        questions: [
+            { id: "cloud_input", label: "Awan" }
+        ]
+    },
+    "16": {
+        title: "LEVEL 16: EKSPLORASI",
+        questions: [
+            { id: "text_input", label: "Jawaban" }
+        ]
+    },
+    "17": {
+        title: "LEVEL 17: RENCANA",
+        questions: [
+            { id: "sticky_1", label: "Note 1" },
+            { id: "sticky_2", label: "Note 2" },
+            { id: "sticky_3", label: "Note 3" },
+            { id: "sticky_4", label: "Note 4" }
+        ]
+    },
+    "18": {
+        title: "LEVEL 18: LINGKAR WAKTU",
+        questions: [
+            { id: "past", label: "Dahulu" },
+            { id: "present", label: "Sekarang" },
+            { id: "future", label: "Esok" }
+        ]
+    },
+    "19": {
+        title: "LEVEL 19: SOUNDTRACK",
+        questions: [
+            { id: "playlist_visited", label: "Sudah mendengarkan?" }
+        ]
+    },
+    "20": {
+        title: "LEVEL 20: PETA BERSYUKUR",
+        questions: [
+            { id: "grateful_1", label: "Momen 1" },
+            { id: "grateful_2", label: "Momen 2" },
+            { id: "grateful_3", label: "Momen 3" }
+        ]
+    },
+    // Generated Levels 21-30
+    ...Array.from({ length: 10 }, (_, i) => i + 21).reduce((acc, level) => ({
         ...acc,
         [level.toString()]: {
             title: `LEVEL ${level}: TANTANGAN ${level}`,

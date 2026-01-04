@@ -15,6 +15,14 @@ import Level9Games from '@/app/components/Level9Games'
 import Level10Games from '@/app/components/Level10Games'
 import Level11Games from '@/app/components/Level11Games'
 import Level12Games from '@/app/components/Level12Games'
+import Level13Drawing from '@/app/components/Level13Drawing'
+import Level14Games from '@/app/components/Level14Games'
+import Level15Games from '@/app/components/Level15Games'
+import Level16Games from '@/app/components/Level16Games'
+import Level17Games from '@/app/components/Level17Games'
+import Level18Games from '@/app/components/Level18Games'
+import Level19Games from '@/app/components/Level19Games'
+import Level20Games from '@/app/components/Level20Games'
 
 export default function LevelPage({ params }: { params: { id: string } }) {
     const router = useRouter()
@@ -50,7 +58,7 @@ export default function LevelPage({ params }: { params: { id: string } }) {
         if (e && e.preventDefault) e.preventDefault()
 
         // If it's a component-based submit (like Level 1 & 2 & 3 & 4 & 5 & 6), the data comes as argument
-        const dataToSubmit = (['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'].includes(levelId)) ? e : answers;
+        const dataToSubmit = (['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20'].includes(levelId)) ? e : answers;
 
         if (!dataToSubmit && !['1', '2', '3', '4', '5', '6', '7', '8', '9'].includes(levelId)) {
             if (!confirm("Apakah Anda yakin ingin mengirim jawaban ini?")) return;
@@ -127,6 +135,38 @@ export default function LevelPage({ params }: { params: { id: string } }) {
 
     if (levelId === '12') {
         return <Level12Games levelId={levelId} onComplete={handleSubmit} initialData={answers} />
+    }
+
+    if (levelId === '13') {
+        return <Level13Drawing levelId={levelId} onComplete={handleSubmit} initialData={answers} />
+    }
+
+    if (levelId === '14') {
+        return <Level14Games levelId={levelId} onComplete={handleSubmit} initialData={answers} />
+    }
+
+    if (levelId === '15') {
+        return <Level15Games levelId={levelId} onComplete={handleSubmit} initialData={answers} />
+    }
+
+    if (levelId === '16') {
+        return <Level16Games levelId={levelId} onComplete={handleSubmit} initialData={answers} />
+    }
+
+    if (levelId === '17') {
+        return <Level17Games levelId={levelId} onComplete={handleSubmit} initialData={answers} />
+    }
+
+    if (levelId === '18') {
+        return <Level18Games levelId={levelId} onComplete={handleSubmit} initialData={answers} />
+    }
+
+    if (levelId === '19') {
+        return <Level19Games levelId={levelId} onComplete={handleSubmit} initialData={answers} />
+    }
+
+    if (levelId === '20') {
+        return <Level20Games levelId={levelId} onComplete={handleSubmit} initialData={answers} />
     }
 
 

@@ -433,7 +433,7 @@ export default function GuruDashboard() {
                                                         <p className="font-bold text-white pt-1">{label}</p>
                                                     </div>
                                                     <div className="pl-11">
-                                                        {selectedLevelId === '6' ? (
+                                                        {['6', '13'].includes(selectedLevelId) ? (
                                                             <div className="bg-white p-2 rounded-lg border-2 border-green-500 overflow-hidden relative">
                                                                 <svg viewBox="0 0 500 500" className="w-40 h-40 mx-auto">
                                                                     {(() => {

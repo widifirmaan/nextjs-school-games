@@ -33,9 +33,9 @@ export default function Level9Games({ levelId, onComplete, initialData }: Level9
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault()
-        const allAnswered = questions.every(q => answers[q.id]?.trim());
-        if (!allAnswered) {
-            setWarning("Silakan isi semua jawaban!")
+        const isAnyAnswered = questions.some(q => answers[q.id]?.trim());
+        if (!isAnyAnswered) {
+            setWarning("Silakan isi setidaknya satu jawaban!")
             return;
         }
         setSubmitting(true)
