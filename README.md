@@ -93,12 +93,3 @@ Berikut adalah tampilan antarmuka aplikasi beserta seluruh level yang tersedia.
 | Level 23: Surat Masa Depan | Level 24: Tangga Perubahan | Level 25: Tantangan 25 |
 |----------------------------|----------------------------|------------------------|
 | ![Level 23](public/screenshots/level-23.png) | ![Level 24](public/screenshots/level-24.png) | ![Level 25](public/screenshots/level-25.png) |
-
-#### Level 26 - 30
-| Level 26: Tantangan 26 | Level 27: Tantangan 27 |
-|------------------------|------------------------|
-| ![Level 26](public/screenshots/level-26.png) | ![Level 27](public/screenshots/level-27.png) |
-
-| Level 28: Tantangan 28 | Level 29: Tantangan 29 | Level 30: Tantangan 30 |
-|------------------------|------------------------|------------------------|
-| ![Level 28](public/screenshots/level-28.png) | ![Level 29](public/screenshots/level-29.png) | ![Level 30](public/screenshots/level-30.png) |
