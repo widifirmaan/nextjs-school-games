@@ -105,6 +105,14 @@ Explore the interactive levels and management dashboards of **BukuMedia Next**.
     ```
     *Open [http://localhost:3000](http://localhost:3000) to view the application.*
 
+### 🔐 Default Credentials
+If you have run the seed API (`/api/seed`), you can use the following default accounts:
+
+| Role | Username | Password |
+| :--- | :--- | :--- |
+| **Teacher** | `guru` | `password` |
+| **Student** | `siswa` | `password` |
+
 ---
 
 ## 👥 Authors
