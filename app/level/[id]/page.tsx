@@ -27,6 +27,12 @@ import Level21Games from '@/app/components/Level21Games'
 import Level22Games from '@/app/components/Level22Games'
 import Level23Games from '@/app/components/Level23Games'
 import Level24Games from '@/app/components/Level24Games'
+import Level25Games from '@/app/components/Level25Games'
+import Level26Games from '@/app/components/Level26Games'
+import Level27Games from '@/app/components/Level27Games'
+import Level28Games from '@/app/components/Level28Games'
+import Level29Games from '@/app/components/Level29Games'
+import Level30Games from '@/app/components/Level30Games'
 
 export default function LevelPage({ params }: { params: { id: string } }) {
     const router = useRouter()
@@ -62,7 +68,7 @@ export default function LevelPage({ params }: { params: { id: string } }) {
         if (e && e.preventDefault) e.preventDefault()
 
         // If it's a component-based submit (like Level 1 & 2 & 3 & 4 & 5 & 6), the data comes as argument
-        const dataToSubmit = (['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24'].includes(levelId)) ? e : answers;
+        const dataToSubmit = (['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30'].includes(levelId)) ? e : answers;
 
         if (!dataToSubmit && !['1', '2', '3', '4', '5', '6', '7', '8', '9'].includes(levelId)) {
             if (!confirm("Apakah Anda yakin ingin mengirim jawaban ini?")) return;
@@ -187,6 +193,30 @@ export default function LevelPage({ params }: { params: { id: string } }) {
 
     if (levelId === '24') {
         return <Level24Games levelId={levelId} onComplete={handleSubmit} initialData={answers} />
+    }
+
+    if (levelId === '25') {
+        return <Level25Games levelId={levelId} onComplete={handleSubmit} initialData={answers} />
+    }
+
+    if (levelId === '26') {
+        return <Level26Games levelId={levelId} onComplete={handleSubmit} initialData={answers} />
+    }
+
+    if (levelId === '27') {
+        return <Level27Games levelId={levelId} onComplete={handleSubmit} initialData={answers} />
+    }
+
+    if (levelId === '28') {
+        return <Level28Games levelId={levelId} onComplete={handleSubmit} initialData={answers} />
+    }
+
+    if (levelId === '29') {
+        return <Level29Games levelId={levelId} onComplete={handleSubmit} initialData={answers} />
+    }
+
+    if (levelId === '30') {
+        return <Level30Games levelId={levelId} onComplete={handleSubmit} initialData={answers} />
     }
 
 

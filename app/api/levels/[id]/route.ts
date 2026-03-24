@@ -19,7 +19,16 @@ export async function GET(req: Request, { params }: { params: { id: string } }) 
         return NextResponse.json({ error: 'User not found' }, { status: 404 });
     }
 
-    const levelKey = `level${params.id}`;
+    const levelId = params.id;
+    const indukId = Math.ceil(parseInt(levelId) / 5).toString();
+
+    if (!user.indukStartTimes) user.indukStartTimes = new Map();
+    if (!user.indukStartTimes.has(indukId)) {
+        user.indukStartTimes.set(indukId, new Date());
+        await user.save();
+    }
+
+    const levelKey = `level${levelId}`;
     const levelData = user.levels.get(levelKey);
 
     if (levelData) {

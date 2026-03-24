@@ -1,6 +1,6 @@
-# 🎮 BukuMedia Next - Java Book Games
+# 🎮 Pelayaran Jiwa
 
-**BukuMedia Next** is an interactive, web-based learning platform built with **Next.js**. It provides a series of educational game levels designed to help students in learning and self-reflection, migrating from a legacy Java-based system to a modern web architecture.
+**Pelayaran Jiwa** is an interactive, web-based learning platform built with **Next.js**. It provides a series of educational game levels designed to help students in learning and self-reflection, migrating from a legacy Java-based system to a modern web architecture.
 
 ![Status](https://img.shields.io/badge/Status-Active_Development-success?style=for-the-badge)
 ![Next.js](https://img.shields.io/badge/Next.js-14-black?style=for-the-badge&logo=next.js)
@@ -12,7 +12,7 @@
 
 ## 📸 Application Showcase
 
-Explore the interactive levels and management dashboards of **BukuMedia Next**.
+Explore the interactive levels and management dashboards of **Pelayaran Jiwa**.
 
 ### Core Interfaces
 | | |
@@ -99,7 +99,16 @@ Explore the interactive levels and management dashboards of **BukuMedia Next**.
     ```bash
     npm install
     ```
-3.  **Run Development Server**
+3.  **Environment Variables Setup**
+    Create a new file named `.env` in the root of the project and add your database configuration. You can copy the provided example file:
+    ```bash
+    cp .env.example .env
+    ```
+    Open `.env` and configure your MongoDB connection string:
+    ```env
+    MONGODB_URI=your_mongodb_connection_string_here
+    ```
+4.  **Run Development Server**
     ```bash
     npm run dev
     ```

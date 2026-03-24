@@ -38,3 +38,4 @@ next-env.d.ts
 /legacy-java/target
 /legacy-java/.mvn
 /legacy-java/user-data
+.env

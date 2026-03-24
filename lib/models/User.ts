@@ -10,6 +10,11 @@ const UserSchema = new mongoose.Schema({
     schoolName: String,
     photoUrl: String,
     levels: { type: Map, of: String, default: {} }, // Storing JSON string as per Java model
+    indukStartTimes: { type: Map, of: Date, default: {} },
+    indukEndTimes: { type: Map, of: Date, default: {} },
+    dailySubmissions: { type: Map, of: Number, default: {} },
+    awards: { type: [String], default: [] },
+    newAwardsToNotify: { type: [String], default: [] }
 }, { timestamps: true });
 
 export default mongoose.models.User || mongoose.model('User', UserSchema);

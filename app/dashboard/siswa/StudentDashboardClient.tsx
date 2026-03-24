@@ -11,7 +11,41 @@ interface StudentDashboardProps {
 
 export default function StudentDashboardClient({ user, completedLevels }: StudentDashboardProps) {
     const [showLogoutModal, setShowLogoutModal] = useState(false)
+    const [selectedChapter, setSelectedChapter] = useState<number | null>(null)
+    const [currentAwardQueue, setCurrentAwardQueue] = useState<string[]>(user.newAwardsToNotify || []);
+
+    const dismissAward = async (award: string) => {
+        setCurrentAwardQueue(prev => prev.filter(a => a !== award));
+        try {
+            await fetch('/api/awards/clear', {
+                method: 'POST',
+                body: JSON.stringify({ award }),
+                headers: { 'Content-Type': 'application/json' }
+            });
+        } catch (e) {
+            console.error("Failed to dismiss award", e);
+        }
+    };
+
+    const formatAwardName = (award: string) => {
+        if (award === 'CONSISTENT_WORKER') return '🏆 Pekerja Konsisten (7 Hari)';
+        if (award.startsWith('FAST_WORKER_INDUK_')) {
+            const id = award.replace('FAST_WORKER_INDUK_', '');
+            return `⚡ Tercepat Induk ${id}`;
+        }
+        return award;
+    };
+
     const levels = Array.from({ length: 30 }, (_, i) => i + 1);
+    const chapters = Array.from({ length: 6 }, (_, i) => i + 1);
+    const chapterNames: Record<number, string> = {
+        1: 'Self Acceptance',
+        2: 'Positive Relation with Other',
+        3: 'Autonomy',
+        4: 'Environment Mastery',
+        5: 'Purpose in Life',
+        6: 'Personal Growth'
+    };
 
     // Find the first level that hasn't been completed yet
     const firstIncompleteLevel = levels.find(l => !completedLevels.includes(`level${l}`)) || levels.length + 1;
@@ -24,6 +58,21 @@ export default function StudentDashboardClient({ user, completedLevels }: Studen
 
     const isLevelCompleted = (level: number) => {
         return completedLevels.includes(`level${level}`);
+    };
+
+    const getChapterLevels = (chapter: number) => {
+        return Array.from({ length: 5 }, (_, i) => (chapter - 1) * 5 + i + 1);
+    };
+
+    const isChapterUnlocked = (chapter: number) => {
+        const firstLevelOfChapter = (chapter - 1) * 5 + 1;
+        return isLevelUnlocked(firstLevelOfChapter);
+    };
+
+    const getChapterProgressText = (chapter: number) => {
+        const chapterLevels = getChapterLevels(chapter);
+        const completedCount = chapterLevels.filter(l => isLevelCompleted(l)).length;
+        return `${completedCount}/5 Selesai`;
     };
 
     const handleLogout = () => {
@@ -43,7 +92,7 @@ export default function StudentDashboardClient({ user, completedLevels }: Studen
                 <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 z-20">
                     <div className="bg-[#ffca28] text-[#3e2723] px-12 py-3 rounded-full border-b-[6px] border-[#f57f17] shadow-[0_8px_0_rgba(0,0,0,0.2)]">
                         <h1 className="text-3xl font-black uppercase tracking-wider" style={{ textShadow: '2px 2px 0 rgba(255,255,255,0.5)' }}>
-                            Level Select
+                            Dimensi PWB
                         </h1>
                     </div>
                 </div>
@@ -131,64 +180,151 @@ export default function StudentDashboardClient({ user, completedLevels }: Studen
                     </div>
 
                     {/* Right Column: Level Grid */}
-                    <div className="flex-1 overflow-y-auto custom-scrollbar pr-2 max-h-[700px]">
-                        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
-                            {levels.map((level) => {
-                                const unlocked = isLevelUnlocked(level);
-                                const completed = isLevelCompleted(level);
+                    <div className="flex-1 flex flex-col max-h-[700px]">
 
-                                return (
-                                    <div key={level} className="relative group">
-                                        <div className={`
-                                            aspect-[4/5] rounded-xl flex flex-col items-center justify-between p-3 transition-all duration-300
-                                            ${unlocked
-                                                ? 'bg-[#3949ab] border-4 border-[#5c6bc0] shadow-[0_6px_0_#1a237e] hover:-translate-y-1'
-                                                : 'bg-[#424242] border-4 border-[#616161] shadow-[0_6px_0_#212121] opacity-90'
-                                            }
-                                        `}>
-                                            {/* Stars/Lock Header */}
-                                            <div className="h-8 flex items-center justify-center w-full">
-                                                {unlocked ? (
-                                                    <div className="flex gap-0.5">
-                                                        {[1, 2, 3].map(star => (
-                                                            <svg key={star} xmlns="http://www.w3.org/2000/svg" className={`h-4 w-4 ${completed ? 'text-yellow-400' : 'text-gray-400/50'}`} viewBox="0 0 20 20" fill="currentColor">
-                                                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                        {/* Breadcrumbs / Back button */}
+                        {selectedChapter !== null && (
+                            <div className="mb-4 flex items-center justify-between">
+                                <button
+                                    onClick={() => setSelectedChapter(null)}
+                                    className="bg-white/10 hover:bg-white/20 text-white px-4 py-2 rounded-lg font-bold flex items-center gap-2 transition-colors border-2 border-white/20"
+                                >
+                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fillRule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clipRule="evenodd" />
+                                    </svg>
+                                    Kembali ke Induk
+                                </button>
+                                <div className="text-white font-black text-xl bg-[#1a237e] px-4 py-1.5 rounded-full border-2 border-[#5c6bc0]">
+                                    {chapterNames[selectedChapter]}
+                                </div>
+                            </div>
+                        )}
+
+                        <div className="flex-1 overflow-y-auto custom-scrollbar pr-2">
+                            {selectedChapter === null ? (
+                                /* Chapters Grid */
+                                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                    {chapters.map((chapter) => {
+                                        const unlocked = isChapterUnlocked(chapter);
+                                        const progressText = getChapterProgressText(chapter);
+
+                                        return (
+                                            <div key={chapter} className="relative group cursor-pointer" onClick={() => unlocked && setSelectedChapter(chapter)}>
+                                                <div className={`
+                                                    aspect-[4/3] rounded-2xl flex flex-col items-center justify-between p-5 transition-all duration-300
+                                                    ${unlocked
+                                                        ? 'bg-[#3949ab] border-[6px] border-[#5c6bc0] shadow-[0_8px_0_#1a237e] hover:-translate-y-2 hover:shadow-[0_12px_0_#1a237e]'
+                                                        : 'bg-[#424242] border-[6px] border-[#616161] shadow-[0_8px_0_#212121] opacity-90'
+                                                    }
+                                                `}>
+                                                    {/* Header */}
+                                                    <div className="w-full flex justify-between items-start">
+                                                        {unlocked ? (
+                                                            <div className="bg-[#1a237e] px-3 py-1 rounded-lg text-yellow-400 font-bold text-sm shadow-inner">
+                                                                {progressText}
+                                                            </div>
+                                                        ) : (
+                                                            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-gray-500" viewBox="0 0 20 20" fill="currentColor">
+                                                                <path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd" />
                                                             </svg>
-                                                        ))}
+                                                        )}
+
+                                                        {unlocked && (
+                                                            <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-white" viewBox="0 0 20 20" fill="currentColor">
+                                                                    <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
+                                                                </svg>
+                                                            </div>
+                                                        )}
                                                     </div>
-                                                ) : (
-                                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-500" viewBox="0 0 20 20" fill="currentColor">
-                                                        <path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd" />
-                                                    </svg>
-                                                )}
-                                            </div>
 
-                                            {/* Level Number */}
-                                            <div className="flex flex-col items-center">
-                                                <span className={`text-sm font-black uppercase tracking-widest ${unlocked ? 'text-blue-200' : 'text-gray-400'}`}>
-                                                    LVL {level}
-                                                </span>
-                                            </div>
-
-                                            {/* Action Button/Status */}
-                                            <div className="w-full">
-                                                {unlocked ? (
-                                                    <Link href={`/level/${level}`} className="block w-full">
-                                                        <button className="w-full bg-[#ffca28] hover:bg-[#ffb300] text-[#3e2723] text-xs font-black py-2 rounded-lg border-b-4 border-[#f57f17] active:border-b-0 active:translate-y-1 transition-all shadow-md group-hover:shadow-lg uppercase">
-                                                            Play
-                                                        </button>
-                                                    </Link>
-                                                ) : (
-                                                    <div className="w-full bg-[#616161] text-gray-400 text-[10px] font-bold py-2 rounded-lg border-b-4 border-[#424242] text-center uppercase cursor-not-allowed">
-                                                        Lock
+                                                    {/* Title */}
+                                                    <div className="flex flex-col items-center mt-2 text-center">
+                                                        <span className="text-xs font-bold text-white/70 uppercase tracking-widest mb-1">
+                                                            Induk Level {chapter}
+                                                        </span>
+                                                        <span className={`text-xl md:text-2xl font-black leading-tight ${unlocked ? 'text-white' : 'text-gray-500'}`}>
+                                                            {chapterNames[chapter]}
+                                                        </span>
                                                     </div>
-                                                )}
-                                            </div>
 
-                                        </div>
-                                    </div>
-                                );
-                            })}
+                                                    {/* Action Button/Status */}
+                                                    <div className="w-full mt-4">
+                                                        {unlocked ? (
+                                                            <div className="w-full bg-[#ffca28] group-hover:bg-[#ffb300] text-[#3e2723] text-sm font-black py-2.5 rounded-lg border-b-4 border-[#f57f17] text-center uppercase tracking-wide transition-colors">
+                                                                Pilih Induk
+                                                            </div>
+                                                        ) : (
+                                                            <div className="w-full bg-[#616161] text-gray-400 text-xs font-bold py-2.5 rounded-lg border-b-4 border-[#424242] text-center uppercase">
+                                                                Terkunci
+                                                            </div>
+                                                        )}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+                            ) : (
+                                /* Child Levels Grid */
+                                <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
+                                    {getChapterLevels(selectedChapter).map((level) => {
+                                        const unlocked = isLevelUnlocked(level);
+                                        const completed = isLevelCompleted(level);
+
+                                        return (
+                                            <div key={level} className="relative group">
+                                                <div className={`
+                                                    aspect-[4/5] rounded-xl flex flex-col items-center justify-between p-3 transition-all duration-300
+                                                    ${unlocked
+                                                        ? 'bg-[#3949ab] border-4 border-[#5c6bc0] shadow-[0_6px_0_#1a237e] hover:-translate-y-1'
+                                                        : 'bg-[#424242] border-4 border-[#616161] shadow-[0_6px_0_#212121] opacity-90'
+                                                    }
+                                                `}>
+                                                    {/* Stars/Lock Header */}
+                                                    <div className="h-8 flex items-center justify-center w-full">
+                                                        {unlocked ? (
+                                                            <div className="flex gap-0.5">
+                                                                {[1, 2, 3].map(star => (
+                                                                    <svg key={star} xmlns="http://www.w3.org/2000/svg" className={`h-4 w-4 ${completed ? 'text-yellow-400' : 'text-gray-400/50'}`} viewBox="0 0 20 20" fill="currentColor">
+                                                                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                                                    </svg>
+                                                                ))}
+                                                            </div>
+                                                        ) : (
+                                                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-500" viewBox="0 0 20 20" fill="currentColor">
+                                                                <path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd" />
+                                                            </svg>
+                                                        )}
+                                                    </div>
+
+                                                    {/* Level Number */}
+                                                    <div className="flex flex-col items-center">
+                                                        <span className={`text-sm font-black uppercase tracking-widest ${unlocked ? 'text-blue-200' : 'text-gray-400'}`}>
+                                                            LVL {level}
+                                                        </span>
+                                                    </div>
+
+                                                    {/* Action Button/Status */}
+                                                    <div className="w-full">
+                                                        {unlocked ? (
+                                                            <Link href={`/level/${level}`} className="block w-full">
+                                                                <button className="w-full bg-[#ffca28] hover:bg-[#ffb300] text-[#3e2723] text-xs font-black py-2 rounded-lg border-b-4 border-[#f57f17] active:border-b-0 active:translate-y-1 transition-all shadow-md group-hover:shadow-lg uppercase">
+                                                                    Play
+                                                                </button>
+                                                            </Link>
+                                                        ) : (
+                                                            <div className="w-full bg-[#616161] text-gray-400 text-[10px] font-bold py-2 rounded-lg border-b-4 border-[#424242] text-center uppercase cursor-not-allowed">
+                                                                Lock
+                                                            </div>
+                                                        )}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+                            )}
                         </div>
                     </div>
 
@@ -236,6 +372,35 @@ export default function StudentDashboardClient({ user, completedLevels }: Studen
                     </div>
                 </div>
             )}
+
+            {/* Awards Modal */}
+            {currentAwardQueue.length > 0 && (
+                <div className="fixed inset-0 bg-black/80 backdrop-blur-sm grid place-items-center z-50 p-4 animate-[fadeIn_0.5s_ease-out]">
+                    <div className="w-full max-w-md relative bg-gradient-to-b from-[#ffca28] to-[#f57f17] rounded-3xl p-8 border-8 border-white shadow-2xl text-center transform animate-[popIn_0.5s_cubic-bezier(0.175,0.885,0.32,1.275)]">
+                        <div className="absolute -top-12 left-1/2 -translate-x-1/2 text-6xl drop-shadow-lg">
+                            🎉
+                        </div>
+                        <h2 className="text-3xl font-black text-white uppercase tracking-widest drop-shadow-md mb-2">
+                            PENGHARGAAN BARU!
+                        </h2>
+                        <p className="text-white text-lg font-bold mb-6 drop-shadow-sm">Selamat {user.fullName}, kamu mendapatkan pencapaian:</p>
+
+                        <div className="bg-white/20 rounded-2xl p-6 mb-8 border-4 border-white/30 backdrop-blur-sm">
+                            <span className="text-2xl font-black text-white drop-shadow-md relative z-10 text-[shadow:1px_1px_0_#000]">
+                                {formatAwardName(currentAwardQueue[0])}
+                            </span>
+                        </div>
+
+                        <button
+                            onClick={() => dismissAward(currentAwardQueue[0])}
+                            className="bg-white text-[#f57f17] px-8 py-3 rounded-full font-black uppercase tracking-wider text-lg shadow-[0_6px_0_rgba(0,0,0,0.2)] active:translate-y-1 active:shadow-[0_2px_0_rgba(0,0,0,0.2)] transition-all hover:bg-gray-100"
+                        >
+                            Luar Biasa!
+                        </button>
+                    </div>
+                </div>
+            )}
+
         </div>
     )
 }

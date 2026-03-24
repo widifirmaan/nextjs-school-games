@@ -4,7 +4,7 @@ export default function Home() {
     return (
         <main className="body-login min-h-screen">
             <div className="login-panel game-panel text-center">
-                <div className="header-ribbon">BukuMedia</div>
+                <div className="header-ribbon">Pelayaran Jiwa</div>
                 <p className="mb-8 text-lg font-bold">Platform Pembelajaran Interaktif</p>
 
                 <div className="space-y-4">

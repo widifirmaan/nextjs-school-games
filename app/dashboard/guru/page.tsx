@@ -16,6 +16,7 @@ interface User {
     kelas: string
     schoolName: string
     levels?: Record<string, string> // Map of levelKey -> jsonString
+    awards?: string[]
 }
 
 export default function GuruDashboard() {
@@ -196,6 +197,7 @@ export default function GuruDashboard() {
                 'Username': student.username,
                 'Kelas': student.kelas || '-',
                 'Sekolah': student.schoolName || '-',
+                'Penghargaan': student.awards ? student.awards.join(', ') : '-'
             }
 
             // Loop columns for Levels 1-30
@@ -255,7 +257,7 @@ export default function GuruDashboard() {
         const wscols = Object.keys(dataToExport[0] || {}).map(() => ({ wch: 40 }));
         worksheet['!cols'] = wscols;
 
-        XLSX.writeFile(workbook, "Data_Siswa_BukuMedia.xlsx")
+        XLSX.writeFile(workbook, "Data_Siswa_Pelayaran_Jiwa.xlsx")
     }
 
     // Generate Level Columns (1-30)
@@ -334,6 +336,9 @@ export default function GuruDashboard() {
                                     <th className="px-4 py-3 sticky left-0 bg-[#3949ab] z-10 min-w-[200px] border-r border-blue-400">
                                         Nama Siswa
                                     </th>
+                                    <th className="px-4 py-3 bg-[#3949ab] text-center min-w-[150px] border-r border-blue-400 whitespace-nowrap">
+                                        Penghargaan
+                                    </th>
                                     {levelColumns.map(lvl => (
                                         <th key={lvl} className="px-2 py-3 text-center min-w-[50px] whitespace-nowrap border-r border-blue-700/30">
                                             <div className="flex flex-col items-center">
@@ -352,6 +357,15 @@ export default function GuruDashboard() {
                                     <tr key={student._id} className={`${idx % 2 === 0 ? 'bg-blue-50' : 'bg-white'} hover:bg-blue-100 transition-colors`}>
                                         <td className={`px-4 py-3 font-bold text-gray-800 sticky left-0 z-10 border-r border-[#9fa8da] ${idx % 2 === 0 ? 'bg-blue-50' : 'bg-white'}`}>
                                             {student.fullName}
+                                        </td>
+                                        <td className="px-4 py-3 text-center border-r border-gray-200">
+                                            <div className="flex flex-wrap gap-1 justify-center">
+                                                {student.awards && student.awards.length > 0 ? student.awards.map(a => (
+                                                    <span key={a} className="bg-yellow-400 text-xs font-bold px-2 py-1 rounded-full shadow-sm">
+                                                        {a.replace('FAST_WORKER_INDUK_', '⚡ Induk ').replace('CONSISTENT_WORKER', '🏆 7-Hari Konsisten')}
+                                                    </span>
+                                                )) : <span className="text-gray-400 text-xs">-</span>}
+                                            </div>
                                         </td>
                                         {levelColumns.map(lvl => {
                                             const levelKey = `level${lvl}`;

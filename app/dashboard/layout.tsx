@@ -26,7 +26,7 @@ export default async function DashboardLayout({
                             <div className="flex-shrink-0">
                                 <Link href="/dashboard">
                                     <h1 className="text-4xl font-bold font-fredoka text-[#ffca28]" style={{ textShadow: '3px 3px 0 #000' }}>
-                                        BukuMedia
+                                        Pelayaran Jiwa
                                     </h1>
                                 </Link>
                             </div>

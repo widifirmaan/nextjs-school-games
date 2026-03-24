@@ -175,10 +175,11 @@ export const LEVEL_DATA: Record<string, { title: string, questions: { id: string
     ...Array.from({ length: 6 }, (_, i) => i + 25).reduce((acc, level) => ({
         ...acc,
         [level.toString()]: {
-            title: `LEVEL ${level}: TANTANGAN ${level}`,
+            title: `LEVEL ${level}: TANGGA PERUBAHAN`,
             questions: [
-                { id: `Level_${level}_Pertanyaan_1`, label: `Pertanyaan 1 untuk Level ${level}?` },
-                { id: `Level_${level}_Pertanyaan_2`, label: `Pertanyaan 2 untuk Level ${level}?` }
+                { id: "name_input", label: "My Name is..." },
+                { id: "change_goal", label: "Hal yang ingin saya ubah" },
+                { id: "change_steps", label: "Langkah-langkahnya" }
             ]
         }
     }), {})

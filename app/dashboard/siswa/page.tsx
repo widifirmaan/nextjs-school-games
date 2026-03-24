@@ -22,6 +22,7 @@ export default async function SiswaDashboard() {
         schoolName: user?.schoolName,
         kelas: user?.kelas,
         photoUrl: user?.photoUrl,
+        newAwardsToNotify: user?.newAwardsToNotify || [],
         // ... any other needed fields
     }
 
