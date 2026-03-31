@@ -184,3 +184,19 @@ export const LEVEL_DATA: Record<string, { title: string, questions: { id: string
         }
     }), {})
 }
+
+export const CHAPTER_NAMES: Record<number, string> = {
+    1: 'SELF ACCEPTANCE',
+    2: 'ENVIRONMENTAL',
+    3: 'PERSONAL GROWTH',
+    4: 'PURPOSE IN LIFE',
+    5: 'POSITIVE RELATIONS'
+};
+
+export const CHAPTER_MAPPING: Record<number, number[]> = {
+    1: [1, 6, 7, 9, 10, 12, 14],
+    2: [5, 11, 13, 19, 21],
+    3: [3, 4, 8, 15, 17, 24, 25, 26, 27, 28, 29, 30],
+    4: [16, 18, 20, 22, 23],
+    5: [2]
+};

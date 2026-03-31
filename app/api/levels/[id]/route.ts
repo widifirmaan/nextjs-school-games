@@ -5,6 +5,7 @@ import dbConnect from '@/lib/mongodb';
 import User from '@/lib/models/User';
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/authOptions"
+import { CHAPTER_MAPPING } from '@/lib/gameData';
 
 export async function GET(req: Request, { params }: { params: { id: string } }) {
     const session = await getServerSession(authOptions);
@@ -20,7 +21,15 @@ export async function GET(req: Request, { params }: { params: { id: string } }) 
     }
 
     const levelId = params.id;
-    const indukId = Math.ceil(parseInt(levelId) / 5).toString();
+    const levelNum = parseInt(levelId);
+    let currentIndukId = "";
+    for (const [id, levels] of Object.entries(CHAPTER_MAPPING)) {
+        if (levels.includes(levelNum)) {
+            currentIndukId = id;
+            break;
+        }
+    }
+    const indukId = currentIndukId || Math.ceil(levelNum / 5).toString();
 
     if (!user.indukStartTimes) user.indukStartTimes = new Map();
     if (!user.indukStartTimes.has(indukId)) {

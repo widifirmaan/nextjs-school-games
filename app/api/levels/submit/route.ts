@@ -6,6 +6,7 @@ import User from '@/lib/models/User';
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/authOptions"
 import { revalidatePath } from 'next/cache';
+import { CHAPTER_MAPPING } from '@/lib/gameData';
 
 export async function POST(req: Request) {
     const session = await getServerSession(authOptions);
@@ -57,12 +58,21 @@ export async function POST(req: Request) {
         }
     }
 
-    // Fastest Worker per Induk Level Logic
+    // Fastest Worker per Category Logic
     const levelNum = parseInt(level);
-    const indukId = Math.ceil(levelNum / 5).toString();
-    const isLastLevelOfInduk = (levelNum % 5 === 0);
+    let currentIndukId = "";
+    let isLastLevelOfInduk = false;
 
-    if (isLastLevelOfInduk) {
+    for (const [id, levelList] of Object.entries(CHAPTER_MAPPING)) {
+        if (levelList.includes(levelNum)) {
+            currentIndukId = id;
+            isLastLevelOfInduk = levelList[levelList.length - 1] === levelNum;
+            break;
+        }
+    }
+
+    if (currentIndukId && isLastLevelOfInduk) {
+        const indukId = currentIndukId;
         if (!user.indukEndTimes) user.indukEndTimes = new Map();
         if (!user.indukEndTimes.has(indukId)) {
             user.indukEndTimes.set(indukId, new Date());

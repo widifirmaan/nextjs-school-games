@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { signOut } from 'next-auth/react'
+import { CHAPTER_NAMES, CHAPTER_MAPPING } from '@/lib/gameData'
 
 interface StudentDashboardProps {
     user: any;
@@ -37,15 +38,8 @@ export default function StudentDashboardClient({ user, completedLevels }: Studen
     };
 
     const levels = Array.from({ length: 30 }, (_, i) => i + 1);
-    const chapters = Array.from({ length: 6 }, (_, i) => i + 1);
-    const chapterNames: Record<number, string> = {
-        1: 'Self Acceptance',
-        2: 'Positive Relation with Other',
-        3: 'Autonomy',
-        4: 'Environment Mastery',
-        5: 'Purpose in Life',
-        6: 'Personal Growth'
-    };
+    const chapters = Object.keys(CHAPTER_NAMES).map(Number);
+    const chapterNames = CHAPTER_NAMES;
 
     // Find the first level that hasn't been completed yet
     const firstIncompleteLevel = levels.find(l => !completedLevels.includes(`level${l}`)) || levels.length + 1;
@@ -61,18 +55,21 @@ export default function StudentDashboardClient({ user, completedLevels }: Studen
     };
 
     const getChapterLevels = (chapter: number) => {
-        return Array.from({ length: 5 }, (_, i) => (chapter - 1) * 5 + i + 1);
+        return CHAPTER_MAPPING[chapter] || [];
     };
 
     const isChapterUnlocked = (chapter: number) => {
-        const firstLevelOfChapter = (chapter - 1) * 5 + 1;
-        return isLevelUnlocked(firstLevelOfChapter);
+        const chapterLevels = getChapterLevels(chapter);
+        if (chapterLevels.length === 0) return false;
+        // Unlocked if first level is unlocked
+        return isLevelUnlocked(chapterLevels[0]);
     };
 
     const getChapterProgressText = (chapter: number) => {
         const chapterLevels = getChapterLevels(chapter);
+        if (chapterLevels.length === 0) return '0/0 Selesai';
         const completedCount = chapterLevels.filter(l => isLevelCompleted(l)).length;
-        return `${completedCount}/5 Selesai`;
+        return `${completedCount}/${chapterLevels.length} Selesai`;
     };
 
     const handleLogout = () => {
@@ -185,14 +182,14 @@ export default function StudentDashboardClient({ user, completedLevels }: Studen
                         {/* Breadcrumbs / Back button */}
                         {selectedChapter !== null && (
                             <div className="mb-4 flex items-center justify-between">
-                                <button
+                                <button 
                                     onClick={() => setSelectedChapter(null)}
                                     className="bg-white/10 hover:bg-white/20 text-white px-4 py-2 rounded-lg font-bold flex items-center gap-2 transition-colors border-2 border-white/20"
                                 >
                                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                                         <path fillRule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clipRule="evenodd" />
                                     </svg>
-                                    Kembali ke Induk
+                                    Kembali ke Menu Utama
                                 </button>
                                 <div className="text-white font-black text-xl bg-[#1a237e] px-4 py-1.5 rounded-full border-2 border-[#5c6bc0]">
                                     {chapterNames[selectedChapter]}
@@ -207,7 +204,7 @@ export default function StudentDashboardClient({ user, completedLevels }: Studen
                                     {chapters.map((chapter) => {
                                         const unlocked = isChapterUnlocked(chapter);
                                         const progressText = getChapterProgressText(chapter);
-
+                                        
                                         return (
                                             <div key={chapter} className="relative group cursor-pointer" onClick={() => unlocked && setSelectedChapter(chapter)}>
                                                 <div className={`
@@ -228,7 +225,7 @@ export default function StudentDashboardClient({ user, completedLevels }: Studen
                                                                 <path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd" />
                                                             </svg>
                                                         )}
-
+                                                        
                                                         {unlocked && (
                                                             <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center">
                                                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-white" viewBox="0 0 20 20" fill="currentColor">
@@ -241,7 +238,7 @@ export default function StudentDashboardClient({ user, completedLevels }: Studen
                                                     {/* Title */}
                                                     <div className="flex flex-col items-center mt-2 text-center">
                                                         <span className="text-xs font-bold text-white/70 uppercase tracking-widest mb-1">
-                                                            Induk Level {chapter}
+                                                            Kategori {chapter}
                                                         </span>
                                                         <span className={`text-xl md:text-2xl font-black leading-tight ${unlocked ? 'text-white' : 'text-gray-500'}`}>
                                                             {chapterNames[chapter]}
@@ -252,7 +249,7 @@ export default function StudentDashboardClient({ user, completedLevels }: Studen
                                                     <div className="w-full mt-4">
                                                         {unlocked ? (
                                                             <div className="w-full bg-[#ffca28] group-hover:bg-[#ffb300] text-[#3e2723] text-sm font-black py-2.5 rounded-lg border-b-4 border-[#f57f17] text-center uppercase tracking-wide transition-colors">
-                                                                Pilih Induk
+                                                                Pilih Kategori
                                                             </div>
                                                         ) : (
                                                             <div className="w-full bg-[#616161] text-gray-400 text-xs font-bold py-2.5 rounded-lg border-b-4 border-[#424242] text-center uppercase">
@@ -384,14 +381,14 @@ export default function StudentDashboardClient({ user, completedLevels }: Studen
                             PENGHARGAAN BARU!
                         </h2>
                         <p className="text-white text-lg font-bold mb-6 drop-shadow-sm">Selamat {user.fullName}, kamu mendapatkan pencapaian:</p>
-
+                        
                         <div className="bg-white/20 rounded-2xl p-6 mb-8 border-4 border-white/30 backdrop-blur-sm">
                             <span className="text-2xl font-black text-white drop-shadow-md relative z-10 text-[shadow:1px_1px_0_#000]">
                                 {formatAwardName(currentAwardQueue[0])}
                             </span>
                         </div>
 
-                        <button
+                        <button 
                             onClick={() => dismissAward(currentAwardQueue[0])}
                             className="bg-white text-[#f57f17] px-8 py-3 rounded-full font-black uppercase tracking-wider text-lg shadow-[0_6px_0_rgba(0,0,0,0.2)] active:translate-y-1 active:shadow-[0_2px_0_rgba(0,0,0,0.2)] transition-all hover:bg-gray-100"
                         >

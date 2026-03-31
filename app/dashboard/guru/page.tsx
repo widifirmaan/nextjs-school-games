@@ -362,7 +362,7 @@ export default function GuruDashboard() {
                                             <div className="flex flex-wrap gap-1 justify-center">
                                                 {student.awards && student.awards.length > 0 ? student.awards.map(a => (
                                                     <span key={a} className="bg-yellow-400 text-xs font-bold px-2 py-1 rounded-full shadow-sm">
-                                                        {a.replace('FAST_WORKER_INDUK_', '⚡ Induk ').replace('CONSISTENT_WORKER', '🏆 7-Hari Konsisten')}
+                                                        {a.replace('FAST_WORKER_INDUK_', '⚡ Kategori ').replace('CONSISTENT_WORKER', '🏆 7-Hari Konsisten')}
                                                     </span>
                                                 )) : <span className="text-gray-400 text-xs">-</span>}
                                             </div>
