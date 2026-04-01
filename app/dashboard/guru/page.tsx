@@ -218,7 +218,7 @@ export default function GuruDashboard() {
                             row[`Level ${i}`] = relevantKeys.map(k => {
                                 const qConfig = levelConfig?.questions?.find(q => q.id === k);
                                 const label = qConfig ? qConfig.label : k.replace(/_/g, ' ');
-                                const val = i === 6 ? '[Gambar]' : answers[k];
+                                const val = (i === 2 || i === 10) ? '[Gambar]' : answers[k];
                                 return `${label} = ${val}`;
                             }).join('\n');
                         } else {
@@ -480,7 +480,7 @@ export default function GuruDashboard() {
                                                         <p className="font-bold text-white pt-1">{label}</p>
                                                     </div>
                                                     <div className="pl-11">
-                                                        {['6', '13'].includes(selectedLevelId) ? (
+                                                        {['2', '10'].includes(selectedLevelId) ? (
                                                             <div className="bg-white p-2 rounded-lg border-2 border-green-500 overflow-hidden relative">
                                                                 <svg viewBox="0 0 500 500" className="w-40 h-40 mx-auto">
                                                                     {(() => {

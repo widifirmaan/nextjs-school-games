@@ -128,7 +128,7 @@ const DrawingCanvas = ({ id, onSave, className, initialValue }: { id: string, on
     )
 }
 
-export default function Level13Drawing({ levelId, onComplete, initialData }: Level13DrawingProps) {
+export default function Level10Drawing({ levelId, onComplete, initialData }: Level13DrawingProps) {
     const router = useRouter()
     const levelConfig = LEVEL_DATA[levelId] || { questions: [] }
 

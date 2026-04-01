@@ -4,18 +4,18 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { LEVEL_DATA } from '@/lib/gameData'
 import Level1WordSearch from '@/app/components/Level1WordSearch'
-import Level2IceCream from '@/app/components/Level2IceCream'
+import Level2Drawing from '@/app/components/Level2Drawing'
 import Level3Games from '@/app/components/Level3Games'
 import Level4Games from '@/app/components/Level4Games'
 import Level5Games from '@/app/components/Level5Games'
-import Level6Drawing from '@/app/components/Level6Drawing'
+import Level6Games from '@/app/components/Level6Games'
 import Level7Games from '@/app/components/Level7Games'
 import Level8Games from '@/app/components/Level8Games'
 import Level9Games from '@/app/components/Level9Games'
-import Level10Games from '@/app/components/Level10Games'
+import Level10Drawing from '@/app/components/Level10Drawing'
 import Level11Games from '@/app/components/Level11Games'
 import Level12Games from '@/app/components/Level12Games'
-import Level13Drawing from '@/app/components/Level13Drawing'
+import Level13Games from '@/app/components/Level13Games'
 import Level14Games from '@/app/components/Level14Games'
 import Level15Games from '@/app/components/Level15Games'
 import Level16Games from '@/app/components/Level16Games'
@@ -32,7 +32,7 @@ import Level26Games from '@/app/components/Level26Games'
 import Level27Games from '@/app/components/Level27Games'
 import Level28Games from '@/app/components/Level28Games'
 import Level29Games from '@/app/components/Level29Games'
-import Level30Games from '@/app/components/Level30Games'
+import Level30IceCream from '@/app/components/Level30IceCream'
 
 export default function LevelPage({ params }: { params: { id: string } }) {
     const router = useRouter()
@@ -99,12 +99,12 @@ export default function LevelPage({ params }: { params: { id: string } }) {
         setSubmitting(false)
     }
 
-    if (levelId === '1') {
+        if (levelId === '1') {
         return <Level1WordSearch levelId={levelId} onComplete={handleSubmit} initialData={answers} />
     }
 
     if (levelId === '2') {
-        return <Level2IceCream levelId={levelId} onComplete={handleSubmit} initialData={answers} />
+        return <Level2Drawing levelId={levelId} onComplete={handleSubmit} initialData={answers} />
     }
 
     if (levelId === '3') {
@@ -120,7 +120,7 @@ export default function LevelPage({ params }: { params: { id: string } }) {
     }
 
     if (levelId === '6') {
-        return <Level6Drawing levelId={levelId} onComplete={handleSubmit} initialData={answers} />
+        return <Level6Games levelId={levelId} onComplete={handleSubmit} initialData={answers} />
     }
 
     if (levelId === '7') {
@@ -136,7 +136,7 @@ export default function LevelPage({ params }: { params: { id: string } }) {
     }
 
     if (levelId === '10') {
-        return <Level10Games levelId={levelId} onComplete={handleSubmit} initialData={answers} />
+        return <Level10Drawing levelId={levelId} onComplete={handleSubmit} initialData={answers} />
     }
 
     if (levelId === '11') {
@@ -148,7 +148,7 @@ export default function LevelPage({ params }: { params: { id: string } }) {
     }
 
     if (levelId === '13') {
-        return <Level13Drawing levelId={levelId} onComplete={handleSubmit} initialData={answers} />
+        return <Level13Games levelId={levelId} onComplete={handleSubmit} initialData={answers} />
     }
 
     if (levelId === '14') {
@@ -216,7 +216,7 @@ export default function LevelPage({ params }: { params: { id: string } }) {
     }
 
     if (levelId === '30') {
-        return <Level30Games levelId={levelId} onComplete={handleSubmit} initialData={answers} />
+        return <Level30IceCream levelId={levelId} onComplete={handleSubmit} initialData={answers} />
     }
 
 

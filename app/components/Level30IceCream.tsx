@@ -11,7 +11,7 @@ interface Level2IceCreamProps {
     initialData?: Record<string, string>;
 }
 
-export default function Level2IceCream({ levelId, onComplete, initialData }: Level2IceCreamProps) {
+export default function Level30IceCream({ levelId, onComplete, initialData }: Level2IceCreamProps) {
     const router = useRouter()
     const [answers, setAnswers] = useState({
         harapan: ''

@@ -6,13 +6,13 @@ import Image from 'next/image'
 import GameAlert from './GameAlert'
 import { LEVEL_DATA } from '@/lib/gameData'
 
-interface Level24GamesProps {
+interface Level30GamesProps {
     levelId: string;
     onComplete: (data: any) => void;
     initialData?: Record<string, string>;
 }
 
-export default function Level24Games({ levelId, onComplete, initialData }: Level24GamesProps) {
+export default function Level24Games({ levelId, onComplete, initialData }: Level30GamesProps) {
     const router = useRouter()
 
     const levelConfig = LEVEL_DATA[levelId] || { questions: [] }
