@@ -197,7 +197,7 @@ export default function StudentDashboardClient({ user, completedLevels }: Studen
                             </div>
                         )}
 
-                        <div className="flex-1 overflow-y-auto custom-scrollbar pr-2">
+                        <div className="flex-1 overflow-y-auto custom-scrollbar pr-2 pt-4">
                             {selectedChapter === null ? (
                                 /* Chapters Grid */
                                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6">
