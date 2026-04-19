@@ -22,7 +22,6 @@ body {
   font-family: var(--font-nunito), sans-serif;
   /* Use Next.js font variable */
   min-height: 100vh;
-  padding-bottom: 2rem;
   overflow-x: hidden;
   /* Prevent horizontal scroll on body */
   /* Universal background pattern */
@@ -510,4 +509,87 @@ body {
 .far,
 .fab {
   font-family: "Font Awesome 5 Free";
+}
+
+/* --- Print Styles --- */
+@media print {
+  @page {
+    size: auto;
+    margin: 10mm;
+  }
+
+  body {
+    background: white !important;
+    background-image: none !important;
+    color: black !important;
+    padding: 0 !important;
+  }
+
+  nav,
+  footer,
+  .btn-game-login,
+  .btn-game,
+  button,
+  [role="button"],
+  a[href="/login"] {
+    display: none !important;
+  }
+
+  .min-h-screen {
+    min-height: auto !important;
+  }
+
+  section {
+    page-break-inside: avoid;
+    padding: 20px 0 !important;
+    border: none !important;
+    background: white !important;
+    color: black !important;
+  }
+
+  h1, h2, h3 {
+    color: black !important;
+    text-shadow: none !important;
+  }
+
+  .game-panel {
+    border: 2px solid #ccc !important;
+    box-shadow: none !important;
+    background: white !important;
+    color: black !important;
+    padding: 20px !important;
+    margin-bottom: 30px !important;
+  }
+
+  .header-ribbon {
+    background: #f0f0f0 !important;
+    color: black !important;
+    border: 1px solid #ccc !important;
+    text-shadow: none !important;
+    margin: 20px auto !important;
+    position: static !important;
+  }
+
+  img {
+    max-width: 100% !important;
+    height: auto !important;
+    page-break-inside: avoid;
+    border-radius: 8px !important;
+    border: 1px solid #eee !important;
+  }
+
+  .grid {
+    display: block !important;
+  }
+
+  .grid > div {
+    margin-bottom: 30px !important;
+    page-break-inside: avoid;
+  }
+
+  /* Force background colors for specific items if needed */
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
 }

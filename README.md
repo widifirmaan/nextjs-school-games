@@ -1,6 +1,6 @@
-# 🎮 Pelayaran Jiwa
+# 🎮 NextJS - School Games
 
-**Pelayaran Jiwa** is an interactive, web-based learning platform built with **Next.js**. It provides a series of educational game levels designed to help students in learning and self-reflection, migrating from a legacy Java-based system to a modern web architecture.
+**NextJS - School Games** is an interactive, web-based learning platform built with **Next.js**. It provides a series of educational game levels designed to help students in learning and self-reflection, migrating from a legacy Java-based system to a modern web architecture.
 
 ![Status](https://img.shields.io/badge/Status-Active_Development-success?style=for-the-badge)
 ![Next.js](https://img.shields.io/badge/Next.js-14-black?style=for-the-badge&logo=next.js)
@@ -12,13 +12,18 @@
 
 ## 📸 Application Showcase
 
-Explore the interactive levels and management dashboards of **Pelayaran Jiwa**.
+Explore the interactive levels and management dashboards of **NextJS - School Games**.
 
 ### Core Interfaces
 | | |
 |:---:|:---:|
-| ![Home](public/screenshots/home.png)<br>**Home Page** | ![Login](public/screenshots/login.png)<br>**Authentication** |
-| ![Dashboard Siswa](public/screenshots/dashboard-siswa.png)<br>**Student Dashboard** | ![Dashboard Guru](public/screenshots/dashboard-guru.png)<br>**Teacher Dashboard** |
+| ![Student Dashboard](public/screenshots/Student%20Dashboard%20Page.png)<br>**Student Dashboard** | ![Teacher Dashboard](public/screenshots/Dashboard%20Guru%20Page.png)<br>**Teacher Dashboard** |
+| ![Level Selection](public/screenshots/Student%20Dashboard%20Level%20Page.png)<br>**Level Selection** | ![Authentication](public/screenshots/login.png)<br>**Authentication** |
+
+### Mobile Support
+| | |
+|:---:|:---:|
+| ![Mobile Login](public/screenshots/Mobile%20Login%20Page.png)<br>**Mobile Login** | ![Mobile Dashboard](public/screenshots/Mobile%20Student%20Dashboard%20Page.png)<br>**Mobile Dashboard** |
 
 ### Level Gallery
 | | | |
@@ -31,7 +36,8 @@ Explore the interactive levels and management dashboards of **Pelayaran Jiwa**.
 | ![Level 16](public/screenshots/level-16.png)<br>**Level 16: Eksplorasi** | ![Level 17](public/screenshots/level-17.png)<br>**Level 17: Rencana** | ![Level 18](public/screenshots/level-18.png)<br>**Level 18: Lingkar Waktu** |
 | ![Level 19](public/screenshots/level-19.png)<br>**Level 19: Soundtrack** | ![Level 20](public/screenshots/level-20.png)<br>**Level 20: Peta Bersyukur** | ![Level 21](public/screenshots/level-21.png)<br>**Level 21: Are You Okay?** |
 | ![Level 22](public/screenshots/level-22.png)<br>**Level 22: Kompas Tujuan** | ![Level 23](public/screenshots/level-23.png)<br>**Level 23: Surat Masa Depan** | ![Level 24](public/screenshots/level-24.png)<br>**Level 24: Tangga Perubahan** |
-| ![Level 25](public/screenshots/level-25.png)<br>**Level 25** | | |
+| ![Level 25](public/screenshots/level-25.png)<br>**Level 25** | ![Level 26](public/screenshots/level-26.png)<br>**Level 26** | ![Level 27](public/screenshots/level-27.png)<br>**Level 27** |
+| ![Level 28](public/screenshots/level-28.png)<br>**Level 28** | ![Level 29](public/screenshots/level-29.png)<br>**Level 29** | ![Level 30](public/screenshots/level-30.png)<br>**Level 30** |
 
 ---
 

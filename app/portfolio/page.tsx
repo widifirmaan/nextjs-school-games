@@ -1,17 +1,8 @@
 import Link from 'next/link'
 
-export default function Home() {
+export default function PortfolioPage() {
     return (
-        <main className="portfolio-body min-h-screen bg-[#b3e5fc] p-0 md:p-10 print:p-0">
-            {/* Navigation / Login Button (Hidden in Print) */}
-            <div className="fixed inset-0 z-[100] print:hidden flex items-center justify-center md:items-start md:pt-6">
-                <div className="w-full max-w-xs px-4 flex justify-center">
-                    <Link href="/login" className="bg-[#64dd17] hover:bg-[#43a047] text-white font-fredoka font-black py-6 px-12 md:py-4 md:px-10 rounded-full border-b-8 border-[#1b5e20] shadow-2xl text-2xl md:text-xl uppercase tracking-wider transition-all hover:scale-110 active:border-b-0 active:translate-y-2 flex items-center gap-2 whitespace-nowrap">
-                        Masuk Aplikasi 🚀
-                    </Link>
-                </div>
-            </div>
-
+        <main className="portfolio-body min-h-screen bg-[#b3e5fc] p-10 print:p-0">
             <style dangerouslySetInnerHTML={{ __html: `
                 :root {
                     --bg-body: #b3e5fc;
@@ -36,28 +27,21 @@ export default function Home() {
                 }
 
                 .portfolio-page {
-                    width: 100%;
-                    display: none; /* Hidden by default for mobile */
+                    width: 297mm;
+                    height: 210mm;
+                    padding: 15mm;
+                    display: flex;
                     flex-direction: column;
                     position: relative;
                     overflow: hidden;
                     background-color: var(--bg-body);
+                    margin: 40px auto;
+                    border: 8px solid var(--panel-border);
+                    border-radius: 40px;
+                    page-break-after: always;
+                    box-shadow: 0 20px 0 rgba(0, 0, 0, 0.1);
                     color: #333;
                     font-family: var(--font-nunito), sans-serif;
-                }
-
-                @media (min-width: 768px) {
-                    .portfolio-page {
-                        display: flex;
-                        width: 297mm;
-                        height: 210mm;
-                        padding: 15mm;
-                        margin: 40px auto;
-                        border: 8px solid var(--panel-border);
-                        border-radius: 40px;
-                        page-break-after: always;
-                        box-shadow: 0 20px 0 rgba(0, 0, 0, 0.1);
-                    }
                 }
 
                 @media print {
