@@ -39,6 +39,7 @@ export default function Home() {
                     width: 100%;
                     display: none; /* Hidden by default for mobile */
                     flex-direction: column;
+                    justify-content: center;
                     position: relative;
                     overflow: hidden;
                     background-color: var(--bg-body);
@@ -61,19 +62,57 @@ export default function Home() {
                 }
 
                 @media print {
-                    body, .portfolio-body {
-                        background: white !important;
-                        padding: 0 !important;
+                    @page {
+                        size: A4 landscape;
+                        margin: 10mm;
                     }
+
+                    body, .portfolio-body {
+                        background-color: var(--bg-body) !important;
+                        background-image: radial-gradient(#81d4fa 15%, transparent 16%), radial-gradient(#81d4fa 15%, transparent 16%) !important;
+                        background-size: 60px 60px !important;
+                        background-position: 0 0, 30px 30px !important;
+                        -webkit-print-color-adjust: exact !important;
+                        print-color-adjust: exact !important;
+                    }
+
                     .portfolio-page {
-                        margin: 0 !important;
-                        border: none !important;
+                        margin: 0 auto !important;
+                        border: 8px solid var(--panel-border) !important;
+                        width: 270mm !important; /* Slightly smaller to fit comfortably with margins */
+                        height: 185mm !important;
+                        padding: 20mm !important;
+                        border-radius: 40px !important;
+                        page-break-after: always;
+                        -webkit-print-color-adjust: exact !important;
+                        print-color-adjust: exact !important;
+                        display: flex !important;
+                        justify-content: center !important;
                         box-shadow: none !important;
-                        width: 297mm !important;
-                        height: 210mm !important;
-                        border-radius: 0 !important;
-                        -webkit-print-color-adjust: exact;
-                        print-color-adjust: exact;
+                        background-color: var(--bg-body) !important;
+                    }
+
+                    .grid {
+                        display: grid !important;
+                        grid-template-columns: repeat(3, 1fr) !important;
+                        gap: 15px !important;
+                    }
+
+                    .screenshot-frame {
+                        height: 55mm !important;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                    }
+
+                    .screenshot-frame img {
+                        max-height: 100% !important;
+                        width: auto !important;
+                    }
+                    
+                    /* Hide the login button during print */
+                    .print\:hidden {
+                        display: none !important;
                     }
                 }
 
